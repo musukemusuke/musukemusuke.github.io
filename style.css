@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap');
 
+html {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
 #background-video {
     display: none; /* ビデオを非表示にする */
 }
