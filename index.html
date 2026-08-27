@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>𝐌</title>
-    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
@@ -65,9 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="lyrics-container">
-                        <!-- Lyrics will be injected here by JavaScript -->
-                    </div>
+
                 </div>
             </div>
       </section>
@@ -278,66 +276,7 @@
         });
         navLinks[0].classList.add('active');
 
-        // --- Lyrics Sync ---
-        const lyricsContainer = document.getElementById('lyrics-container');
-        let lyricsData = [];
 
-        fetch('lyrics.lrc')
-            .then(response => response.text())
-            .then(text => {
-                lyricsData = parseLRC(text);
-                displayLyrics(lyricsData);
-            });
-
-        function parseLRC(lrc) {
-            const lines = lrc.split('\n');
-            const data = [];
-            for (const line of lines) {
-                const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2})\](.*)/);
-                if (match) {
-                    const minutes = parseInt(match[1], 10);
-                    const seconds = parseInt(match[2], 10);
-                    const milliseconds = parseInt(match[3], 10);
-                    const time = minutes * 60 + seconds + milliseconds / 100;
-                    const text = match[4].trim();
-                    data.push({ time, text });
-                }
-            }
-            return data;
-        }
-
-        function displayLyrics(lyrics) {
-            lyricsContainer.innerHTML = '';
-            lyrics.forEach((line, index) => {
-                const p = document.createElement('p');
-                p.textContent = line.text;
-                p.dataset.time = line.time;
-                p.id = `line-${index}`;
-                lyricsContainer.appendChild(p);
-            });
-        }
-
-        audioPlayer.addEventListener('timeupdate', () => {
-            const currentTime = audioPlayer.currentTime;
-            let activeLineIndex = -1;
-
-            for (let i = lyricsData.length - 1; i >= 0; i--) {
-                if (currentTime >= lyricsData[i].time) {
-                    activeLineIndex = i;
-                    break;
-                }
-            }
-
-            const allLines = lyricsContainer.querySelectorAll('p');
-            allLines.forEach((line, index) => {
-                if (index === activeLineIndex) {
-                    line.classList.add('active');
-                    line.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else {
-                    line.classList.remove('active');
-                }
-            });
-        });
 
         // --- Clock ---
         function updateClock() {
