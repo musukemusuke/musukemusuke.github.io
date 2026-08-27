@@ -50,7 +50,7 @@
                 </div>
                 <div id="music-player-container">
                     <div id="music-player">
-                        <audio id="audio-player" src="music/Cry For Me x Jackpot - Ironmouse.mp3" autoplay></audio>
+                        <audio id="audio-player" src="music/Cry For Me x Jackpot - Ironmouse.mp3" autoplay loop></audio>
                         <div class="player-controls">
                             <button id="play-pause-btn">
                                 <svg id="play-icon" class="player-icon" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"></path></svg>
@@ -273,7 +273,12 @@
         scrollContainer.addEventListener('touchstart', function(e) {
             if (isScrolling) return;
             touchStartY = e.touches[0].clientY;
-        }, { passive: true });
+        });
+
+        scrollContainer.addEventListener('touchmove', function(e) {
+            // Prevent the browser's default vertical scroll to avoid conflicts
+            e.preventDefault();
+        }, { passive: false });
 
         scrollContainer.addEventListener('touchend', function(e) {
             if (isScrolling) return;
@@ -288,7 +293,7 @@
                 // Swiped Down
                 scrollToCard(currentCardIndex - 1);
             }
-        }, { passive: true });
+        });
 
 
         navLinks.forEach((link, index) => {
