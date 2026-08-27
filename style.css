@@ -19,6 +19,7 @@ body {
     margin: 0;
     background-color: #111111; /* より深みのあるダークグレーに変更 */
     color: #e0e0e0;
+    overflow: hidden !important; /* ★★★ Prevent body from ever scrolling, under any circumstances ★★★ */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
