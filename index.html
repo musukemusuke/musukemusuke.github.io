@@ -6,38 +6,8 @@
     <title>𝐌</title>
     <link rel="icon" href="favicon.jpg" type="image/jpeg">
     <link rel="stylesheet" href="style.css?v=1.1">
-    <style>
-        /* 以前のbody { visibility: hidden; } は削除 */
-        #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000; /* 背景色を黒に設定、サイトのテーマに合わせて調整可能 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999; /* 他の要素より前面に表示 */
-            transition: opacity 0.5s ease-out; /* フェードアウト効果 */
-        }
-        #loading-overlay.hidden {
-            opacity: 0;
-            pointer-events: none; /* 非表示になったらクリックを透過させる */
-        }
-        #loading-overlay img {
-            max-width: 100%; /* 画面幅の100%を最大幅とする */
-            max-height: 100%; /* 画面高さの100%を最大高さとする */
-            width: 100%; /* 親要素の幅いっぱいに広げる */
-            height: 100%; /* 親要素の高さいっぱいに広げる */
-            object-fit: cover; /* 画面全体を覆うように調整（一部が切り取られる可能性あり） */
-        }
-    </style>
 </head>
 <body>
-    <div id="loading-overlay">
-        <img src="./images/loading_animation.gif" alt="Loading...">
-    </div>
     <div id="scroll-container">
         <section class="card">
             <div class="container">
@@ -472,15 +442,5 @@
             }
         });
   </script>
-    <script>
-        // ページとすべてのリソースが読み込まれた後にbodyを表示する
-        window.addEventListener('load', () => {
-            const loadingOverlay = document.getElementById('loading-overlay');
-            if (loadingOverlay) {
-                loadingOverlay.classList.add('hidden'); // CSSで定義したhiddenクラスを追加してフェードアウト
-                // 必要であれば、アニメーション終了後に要素を完全に削除することも可能
-            }
-        });
-    </script>
 </body>
 </html>
