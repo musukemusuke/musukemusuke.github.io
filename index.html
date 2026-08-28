@@ -6,6 +6,11 @@
     <title>𝐌</title>
     <link rel="icon" href="favicon.jpg" type="image/jpeg">
     <link rel="stylesheet" href="style.css?v=1.1">
+    <style>
+        body {
+            visibility: hidden; /* 初期状態でbody全体を非表示にする */
+        }
+    </style>
 </head>
 <body>
     <div id="scroll-container">
@@ -442,5 +447,11 @@
             }
         });
   </script>
+    <script>
+        // ページとすべてのリソースが読み込まれた後にbodyを表示する
+        window.addEventListener('load', () => {
+            document.body.style.visibility = 'visible';
+        });
+    </script>
 </body>
 </html>
