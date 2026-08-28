@@ -9,9 +9,7 @@ html::-webkit-scrollbar {
     display: none; /* Chrome, Safari, and Opera */
 }
 
-#background-video {
-    display: none; /* ビデオを非表示にする */
-}
+
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -19,7 +17,7 @@ body {
     margin: 0;
     background-color: #111111; /* より深みのあるダークグレーに変更 */
     color: #e0e0e0;
-    overflow: hidden !important; /* ★★★ Prevent body from ever scrolling, under any circumstances ★★★ */
+    overflow-y: hidden; /* bodyの垂直スクロールは防ぐが、!importantは削除 */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
@@ -212,23 +210,71 @@ h1 {
     transform: scale(1.1); /* ホバー時に1.1倍に拡大 */
 }
 
-#music-player {
+
+
+#music-player-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 15px;
-    border-radius: 10px;
-    width: auto; /* 幅を自動調整に変更 */
+    width: auto;
     max-width: 350px;
     margin: 20px auto;
+    
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.player-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px; /* ヘッダーとコントロールの間にスペース */
+}
+
+#album-art {
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    border-radius: 5px;
+    margin-right: 15px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.song-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+#song-title {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#song-artist {
+    font-size: 12px;
+    color: #aaa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .player-controls {
-    margin-right: 15px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 15px; /* コントロールとプログレスバーの間にスペース */
 }
 
 #play-pause-btn {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     background-color: transparent;
     border: none;
     border-radius: 50%;
@@ -245,49 +291,79 @@ h1 {
 }
 
 .player-icon {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
 }
 
-.song-details {
+#progress-container {
     display: flex;
     align-items: center;
-    overflow: hidden;
-    flex-grow: 1; /* 空きスペースを埋めるように拡張 */
-    min-width: 0; /* flexアイテムがコンテンツサイズ以下に縮小できるようにする */
-}
-
-#album-art {
-    width: 60px;
-    height: 60px;
-    min-width: 60px; /* 最小幅を確保 */
-    border-radius: 5px;
-    margin-right: 15px;
-    object-fit: cover;
-    flex-shrink: 0; /* 縮小されないように強制 */
-    display: block !important; /* 常に表示されるように強制 */
-}
-
-.song-info {
-    display: flex;
-    flex-direction: column;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     width: 100%;
+    gap: 10px;
 }
 
-#song-title {
-    font-weight: bold;
-    font-size: 1em;
+#progress-bar {
+    flex-grow: 1;
+    height: 3px;
+    background-color: #555;
+    border-radius: 1.5px;
+    cursor: pointer;
+    position: relative;
 }
 
-#song-artist {
-    font-size: 0.8em;
-    color: #ccc;
+#progress-filled {
+    height: 100%;
+    width: 0%;
+    background-color: #1DB954;
+    border-radius: 1.5px;
 }
 
+#time-display {
+    font-size: 12px;
+    white-space: nowrap;
+}
 
+@media (max-width: 768px) {
+    /* Music Player adjustments */
+    #music-player-container {
+        max-width: 90vw;
+        padding: 15px;
+        margin: 20px auto;
+    }
+
+    .player-header {
+        margin-bottom: 15px;
+    }
+
+    #album-art {
+        width: 80px;
+        height: 80px;
+        min-width: 80px;
+        margin-right: 15px;
+    }
+
+    #song-title {
+        font-size: 1.1em;
+    }
+
+    #song-artist {
+        font-size: 0.9em;
+    }
+
+    .player-controls {
+        margin-bottom: 15px;
+    }
+
+    #play-pause-btn {
+        width: 60px;
+        height: 60px;
+    }
+
+    .player-icon {
+        width: 28px;
+        height: 28px;
+    }
+}
 
 /* Instagramリンクのスタイル */
 #instagram-link {
@@ -333,7 +409,8 @@ h1 {
 }
 
 #mute-toggle {
-    background-color: rgba(255, 255, 255, 0.1); /* よりデザインに合う色合いに調整 */
+    background-color: transparent;
+
     color: white;
     border: none;
     padding: 10px;
@@ -401,9 +478,10 @@ h1 {
 
 #scroll-container {
     height: 100vh;
-    overflow-y: scroll;
+    overflow-y: hidden; /* 初期状態ではスクロールを隠す */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    visibility: hidden; /* 初期状態では非表示 */
 }
 
 #scroll-container::-webkit-scrollbar {
@@ -469,4 +547,142 @@ h1 {
     letter-spacing: 1px;
     opacity: 0.8;
     margin-top: 10px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    /* General adjustments */
+    .container {
+        padding: 20px;
+        max-width: 100%; /* Allow container to take full width on small screens */
+    }
+
+    h1 {
+        font-size: 1.8em; /* Smaller main title */
+    }
+
+    .user-avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-group {
+        flex-direction: column; /* Stack avatar and info vertically */
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .profile-info {
+        align-items: center; /* Center align text when stacked */
+    }
+
+    .link-list {
+        justify-content: center; /* Center social icons */
+        gap: 10px;
+    }
+
+    .instagram-app-icon,
+    .spotify-app-icon,
+    .discord-app-icon {
+        width: 45px; /* Slightly larger icons for easier tapping */
+        height: 45px;
+    }
+
+    .default-button-link {
+        padding: 12px 18px;
+        font-size: 1em;
+    }
+
+    /* Music Player adjustments */
+    #music-player-container {
+        max-width: 90vw; /* Use viewport width for better scaling */
+        padding: 15px; /* Adjust padding for mobile */
+        margin: 20px auto; /* Center it */
+        /* Keep flex-direction: column; as it stacks #music-player and other potential elements vertically */
+    }
+
+    #music-player {
+        width: 100%; /* Take full width of its container */
+        /* margin-bottom: 10px; */ /* Removed as progress bar is now inside song-playback-info */
+    }
+
+    .player-controls {
+    margin-right: 15px; /* 再生ボタンとアルバムアートの間にスペースを追加 */
+}
+
+    #play-pause-btn {
+        width: 60px; /* Larger play/pause button */
+        height: 60px;
+    }
+
+    .player-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .song-details {
+        text-align: center;
+    }
+
+    #album-art {
+        width: 80px; /* Larger album art */
+        height: 80px;
+        min-width: 80px;
+        margin-right: 15px; /* Add margin back for horizontal spacing */
+        margin-bottom: 0; /* Remove bottom margin */
+    }
+
+    #song-title {
+        font-size: 1.1em; /* Slightly larger song title */
+    }
+
+    #song-artist {
+        font-size: 0.9em; /* Slightly larger artist name */
+    }
+
+    /* Volume controls */
+    #volume-container {
+        top: auto;
+        bottom: 20px; /* Move to bottom left */
+        left: 20px;
+        flex-direction: row;
+    }
+
+    #mute-toggle {
+        width: 55px; /* Larger mute button */
+        height: 55px;
+    }
+
+    .volume-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    #volume-container:hover .volume-slider {
+        width: 120px; /* Slightly wider slider on hover */
+    }
+
+    /* Clock adjustments */
+    #clock-container {
+        padding: 15px 30px;
+    }
+
+    #clock {
+        font-size: 2.8em; /* Smaller clock font */
+    }
+
+    #date {
+        font-size: 1em; /* Smaller date font */
+    }
+
+    /* Scroll navigation dots */
+    #scroll-nav {
+        right: 10px; /* Move dots slightly inward */
+        gap: 10px;
+    }
+
+    #scroll-nav a {
+        width: 8px; /* Smaller dots */
+        height: 8px;
+    }
 }
