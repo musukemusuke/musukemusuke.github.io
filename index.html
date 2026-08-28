@@ -368,9 +368,6 @@
             });
         });
         // ページ読み込み時に初期化関数を呼び出す
-        initializeActiveCard();
-
-        // Initialize active card based on URL hash, localStorage, or default to card-1
         function initializeActiveCard() {
             let initialIndex = 0; // 常にcard-1 (インデックス0) に初期化
 
@@ -379,6 +376,7 @@
             cards.forEach((card, idx) => {
                 console.log(`Card ${idx} offsetTop:`, card.offsetTop);
             });
+
             // 一時的にscroll-snap-typeを無効にする
             const originalScrollSnapType = scrollContainer.style.scrollSnapType;
             scrollContainer.style.scrollSnapType = 'none';
@@ -405,7 +403,9 @@
             });
             currentCardIndex = initialIndex; // 現在のカードインデックスをグローバル変数に設定
             console.log('initializeActiveCard: currentCardIndex set to:', currentCardIndex); // Debug log
-            localStorage.setItem('lastViewedCardIndex', initialIndex);
+
+            // URLのハッシュを更新して、常にcard-1と同期させる
+            history.replaceState(null, '', `#card-${initialIndex + 1}`);
 
             // 短い遅延の後でscroll-snap-typeを元に戻す
             setTimeout(() => {
@@ -414,6 +414,9 @@
             scrollContainer.style.overflowY = 'scroll';
             scrollContainer.style.visibility = 'visible';
         }
+        initializeActiveCard();
+
+
 
 
 
