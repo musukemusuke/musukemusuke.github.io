@@ -372,27 +372,7 @@
 
         // Initialize active card based on URL hash, localStorage, or default to card-1
         function initializeActiveCard() {
-            const hash = window.location.hash;
-            let initialIndex = 0; // デフォルトはcard-1
-
-            if (hash) {
-                const match = hash.match(/#card-(\d+)/);
-                if (match && match[1]) {
-                    const cardNum = parseInt(match[1], 10);
-                    if (cardNum >= 1 && cardNum <= cards.length) {
-                        initialIndex = cardNum - 1;
-                    }
-                }
-            } else {
-                // URLハッシュがない場合、localStorageから前回のインデックスを読み込む
-                const storedIndex = localStorage.getItem('lastViewedCardIndex');
-                if (storedIndex !== null) {
-                    const parsedIndex = parseInt(storedIndex, 10);
-                    if (!isNaN(parsedIndex) && parsedIndex >= 0 && parsedIndex < cards.length) {
-                        initialIndex = parsedIndex;
-                    }
-                }
-            }
+            let initialIndex = 0; // 常にcard-1 (インデックス0) に初期化
 
             console.log('initializeActiveCard: initialIndex determined:', initialIndex); // Debug log
             // Log offsetTop for all cards to verify
