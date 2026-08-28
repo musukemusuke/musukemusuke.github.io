@@ -49,7 +49,7 @@
                     <div id="date"></div>
                 </div>
                 <div id="music-player-container">
-                    <audio id="audio-player" src="music/Cry For Me x Jackpot - Ironmouse.mp3" autoplay loop></audio>
+                    <audio id="audio-player" loop></audio>
                     <div class="player-header">
                         <img src="./images/album_art.png" alt="Album Art" id="album-art">
                         <div class="song-info">
@@ -58,9 +58,15 @@
                         </div>
                     </div>
                     <div class="player-controls">
-                        <button id="play-pause-btn">
+                        <button id="prev-btn" class="player-btn">
+                            <svg class="player-icon" viewBox="0 0 24 24" fill="white"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg>
+                        </button>
+                        <button id="play-pause-btn" class="player-btn">
                             <svg id="play-icon" class="player-icon" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"></path></svg>
                             <svg id="pause-icon" class="player-icon" viewBox="0 0 24 24" fill="white" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+                        </button>
+                        <button id="next-btn" class="player-btn">
+                            <svg class="player-icon" viewBox="0 0 24 24" fill="white"><path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z"></path></svg>
                         </button>
                     </div>
                     <div id="progress-container">
@@ -114,10 +120,58 @@
         const playPauseBtn = document.getElementById('play-pause-btn');
         const playIcon = document.getElementById('play-icon');
         const pauseIcon = document.getElementById('pause-icon');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const albumArt = document.getElementById('album-art');
+        const songTitle = document.getElementById('song-title');
+        const songArtist = document.getElementById('song-artist');
+
+        // --- Playlist ---
+        const songs = [
+            {
+                title: 'Cry For Me x Jackpot',
+                artist: 'Ironmouse, GameboyJones, shirobeats & HalaCG',
+                src: 'music/Cry For Me x Jackpot - Ironmouse.mp3',
+                cover: './images/album_art.png'
+            },
+            {
+                title: 'Bad Apple!!',
+                artist: 'nomico',
+                src: 'music/badapple.mp3',
+                cover: './images/album_art (1).png' // Bad Apple!! 専用のアルバムアート
+            }
+        ];
+
+        let currentSongIndex = 0;
+
+        function loadSong(songIndex) {
+            const song = songs[songIndex];
+            audioPlayer.src = song.src;
+            albumArt.src = song.cover;
+            songTitle.textContent = song.title;
+            songArtist.textContent = song.artist;
+            audioPlayer.load(); // Load the new song
+            if (!audioPlayer.paused) { // If it was playing, continue playing
+                audioPlayer.play();
+            }
+        }
+
+        function playNextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            loadSong(currentSongIndex);
+        }
+
+        function playPrevSong() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            loadSong(currentSongIndex);
+        }
+
+        // Initial load
+        loadSong(currentSongIndex);
 
         // --- Volume Control ---
         let lastVolume = 1;
-        audioPlayer.volume = 1; // Set initial volume
+        audioPlayer.volume = 0.5; // Set initial volume
 
         function updateVolumeIcon() {
             if (audioPlayer.muted || audioPlayer.volume === 0) {
@@ -196,6 +250,10 @@
                 pauseIcon.style.display = 'none';
             }
         });
+
+        prevBtn.addEventListener('click', playPrevSong);
+        nextBtn.addEventListener('click', playNextSong);
+        audioPlayer.addEventListener('ended', playNextSong);
 
         // --- Progress Bar and Time Display ---
         const progressContainer = document.getElementById('progress-container');

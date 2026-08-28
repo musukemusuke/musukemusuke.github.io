@@ -216,8 +216,8 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: auto;
-    max-width: 350px;
+    width: 100%; /* 親要素の幅を最大限に利用 */
+    max-width: 450px; /* プログレスバーを長くするために最大幅を調整 */
     margin: 20px auto;
     
     border-radius: 10px;
@@ -246,7 +246,7 @@ h1 {
     flex-direction: column;
     align-items: flex-start;
     flex-grow: 1;
-    min-width: 0;
+    min-width: 300px; /* 短い曲名でも一定の幅を保つ */
 }
 
 #song-title {
@@ -293,6 +293,26 @@ h1 {
 .player-icon {
     width: 28px;
     height: 28px;
+    fill: white; /* アイコンの色を白に明示的に設定 */
+}
+
+.player-btn {
+    width: 55px;
+    height: 55px;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    transition: background-color 0.2s ease;
+    margin: 0 5px; /* ボタン間のスペース */
+}
+
+.player-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 #progress-container {
