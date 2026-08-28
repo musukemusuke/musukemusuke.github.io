@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="scroll-container">
-        <section class="card" id="card-1">
+        <section class="card">
             <div class="container">
                 <div class="profile-group">
                     <img src="./images/shishivibe_avatar.jpg" alt="User Avatar" class="user-avatar">
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </section>
-        <section class="card" id="card-2">
+        <section class="card">
         <div class="card-content">
                 <div id="clock-container">
                     <div id="clock"></div>
@@ -73,11 +73,11 @@
 
             </div>
       </section>
-        <section class="card" id="card-3">
+        <section class="card">
             <div class="card-content">
                 <h2>About Me</h2>
-                <p>Hello. Good evening. Nice to meet you.</p>
-                <p>My favorite fruit is apples, and my name is “Musuke.”</p>
+                <p>Hello and welcome! It's a pleasure to meet you.</p>
+                <p>My favorite fruit is apples, and I go by the name Musuke.</p>
             </div>
         </section>
     </div>
@@ -111,7 +111,7 @@
         const links = document.querySelector('.link-list');
         const scrollContainer = document.getElementById('scroll-container');
         const navLinks = document.querySelectorAll('#scroll-nav a');
-        const cards = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href')));
+        const cards = Array.from(document.querySelectorAll('#scroll-container .card'));
         const playPauseBtn = document.getElementById('play-pause-btn');
         const playIcon = document.getElementById('play-icon');
         const pauseIcon = document.getElementById('pause-icon');
