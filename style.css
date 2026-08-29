@@ -218,7 +218,7 @@ h1 {
     align-items: center;
     width: 100%; /* 親要素の幅を最大限に利用 */
     max-width: 450px; /* プログレスバーを長くするために最大幅を調整 */
-    margin: 20px auto;
+    /* margin: 20px auto; */
     
     border-radius: 10px;
     padding: 15px;
@@ -371,7 +371,7 @@ h1 {
     }
 
     .player-controls {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
 
     #play-pause-btn {
@@ -498,10 +498,10 @@ h1 {
 
 #scroll-container {
     height: 100vh;
-    overflow-y: hidden; /* 初期状態ではスクロールを隠す */
+    overflow-y: scroll; /* 初期状態ではスクロールを隠す */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
-    visibility: hidden; /* 初期状態では非表示 */
+    /* visibility: hidden; */ /* 初期状態では非表示 */
 }
 
 #scroll-container::-webkit-scrollbar {
@@ -574,7 +574,7 @@ h1 {
     /* General adjustments */
     .container {
         padding: 30px; /* PC版と同じパディング */
-        max-width: 450px; /* PC版と同じ最大幅 */
+        max-width: 350px; /* PC版と同じ最大幅 */
         width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
     }
 
@@ -589,7 +589,7 @@ h1 {
 
     .profile-group {
         flex-direction: row; /* PC版と同じ横並びを維持 */
-        gap: 20px; /* PC版と同じギャップ */
+        gap: 15px; /* PC版と同じギャップ */
         margin-bottom: 30px; /* PC版と同じマージン */
     }
 
@@ -598,8 +598,8 @@ h1 {
     }
 
     .link-list {
-        justify-content: flex-start; /* PC版と同じ左揃え */
-        gap: 15px; /* PC版と同じギャップ */
+        justify-content: center; /* PC版と同じ左揃え */
+        gap: 10px; /* PC版と同じギャップ */
     }
 
     .instagram-app-icon,
@@ -616,17 +616,17 @@ h1 {
 
     /* Music Player adjustments */
     #music-player-container {
-        max-width: 450px; /* PC版と同じ最大幅 */
+        max-width: 350px; /* PC版と同じ最大幅 */
         width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
         padding: 15px; /* PC版と同じパディング */
-        margin: 20px auto;
+        /* margin: 20px auto; */ /* 垂直中央揃えのため削除 */
     }
 
     #album-art {
-        width: 70px; /* PC版と同じサイズ */
-        height: 70px; /* PC版と同じサイズ */
-        min-width: 70px;
-        margin-right: 15px;
+        width: 80px; /* PC版と同じサイズ */
+        height: 80px; /* PC版と同じサイズ */
+        min-width: 80px;
+        margin-right: 10px;
     }
 
     #song-title {
@@ -634,7 +634,7 @@ h1 {
     }
 
     #song-artist {
-        font-size: 12px; /* PC版と同じフォントサイズ */
+        font-size: 0.9em; /* PC版と同じフォントサイズ */
     }
 
     #play-pause-btn, .player-btn {

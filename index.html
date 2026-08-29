@@ -144,6 +144,8 @@
 
         let currentSongIndex = 0;
 
+        let isPlaying = false; // 再生状態を管理するフラグ
+
         function loadSong(songIndex) {
             const song = songs[songIndex];
             audioPlayer.src = song.src;
@@ -151,23 +153,63 @@
             songTitle.textContent = song.title;
             songArtist.textContent = song.artist;
             audioPlayer.load(); // Load the new song
-            if (!audioPlayer.paused) { // If it was playing, continue playing
-                audioPlayer.play();
+        }
+
+        function playMusic() {
+            const playPromise = audioPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isPlaying = true;
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                }).catch(error => {
+                    console.error("再生がブロックされました:", error);
+                    isPlaying = false;
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                });
+            }
+        }
+
+        function pauseMusic() {
+            audioPlayer.pause();
+            isPlaying = false;
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                pauseMusic();
+            } else {
+                playMusic();
             }
         }
 
         function playNextSong() {
+            const wasPlayingBefore = isPlaying; // 次の曲へ行く前の再生状態を記憶
             currentSongIndex = (currentSongIndex + 1) % songs.length;
             loadSong(currentSongIndex);
+            if (wasPlayingBefore) { // 前の曲が再生中だった場合のみ、新しい曲を再生
+                playMusic();
+            } else {
+                pauseMusic(); // 停止状態から曲を切り替えた場合、UIを停止状態にリセット
+            }
         }
 
         function playPrevSong() {
+            const wasPlayingBefore = isPlaying; // 前の曲へ戻る前の再生状態を記憶
             currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
             loadSong(currentSongIndex);
+            if (wasPlayingBefore) { // 前の曲が再生中だった場合のみ、新しい曲を再生
+                playMusic();
+            } else {
+                pauseMusic(); // 停止状態から曲を切り替えた場合、UIを停止状態にリセット
+            }
         }
 
         // Initial load
-        loadSong(currentSongIndex);
+        loadSong(currentSongIndex); // 初期ロード時は再生しない
 
         // --- Volume Control ---
         let lastVolume = 0.6; // デフォルト音量を60%に設定
@@ -224,32 +266,7 @@
         setInitialVolumeState();
 
         // --- Music Player Play/Pause ---
-        // Autoplay might be blocked, so we try to play and update the icon accordingly.
-        const playPromise = audioPlayer.play();
-        if (playPromise !== undefined) {
-            playPromise.then(_ => {
-                // Autoplay started!
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-            }).catch(error => {
-                // Autoplay was prevented.
-                console.log("Autoplay was prevented by the browser.");
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-            });
-        }
-
-        playPauseBtn.addEventListener('click', () => {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-            } else {
-                audioPlayer.pause();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-            }
-        });
+        playPauseBtn.addEventListener('click', togglePlayPause);
 
         prevBtn.addEventListener('click', playPrevSong);
         nextBtn.addEventListener('click', playNextSong);
