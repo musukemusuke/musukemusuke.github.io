@@ -194,6 +194,7 @@
 
         function playNextSong() {
             const wasPlayingBefore = !audioPlayer.paused; // 曲を切り替える前の再生状態を記憶
+            audioPlayer.pause(); // 新しい曲をロードする前に一時停止を保証
             currentSongIndex = (currentSongIndex + 1) % songs.length;
             loadSong(currentSongIndex);
             if (wasPlayingBefore) {
@@ -205,6 +206,7 @@
 
         function playPrevSong() {
             const wasPlayingBefore = !audioPlayer.paused; // 曲を切り替える前の再生状態を記憶
+            audioPlayer.pause(); // 新しい曲をロードする前に一時停止を保証
             currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
             loadSong(currentSongIndex);
             if (wasPlayingBefore) {
