@@ -573,136 +573,123 @@ h1 {
 @media (max-width: 768px) {
     /* General adjustments */
     .container {
-        padding: 20px;
-        max-width: 100%; /* Allow container to take full width on small screens */
+        padding: 30px; /* PC版と同じパディング */
+        max-width: 450px; /* PC版と同じ最大幅 */
+        width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
     }
 
     h1 {
-        font-size: 1.8em; /* Smaller main title */
+        font-size: 2.2em; /* PC版と同じフォントサイズ */
     }
 
     .user-avatar {
-        width: 120px;
-        height: 120px;
+        width: 150px; /* PC版と同じサイズ */
+        height: 150px; /* PC版と同じサイズ */
     }
 
     .profile-group {
-        flex-direction: column; /* Stack avatar and info vertically */
-        gap: 15px;
-        margin-bottom: 20px;
+        flex-direction: row; /* PC版と同じ横並びを維持 */
+        gap: 20px; /* PC版と同じギャップ */
+        margin-bottom: 30px; /* PC版と同じマージン */
     }
 
     .profile-info {
-        align-items: center; /* Center align text when stacked */
+        align-items: flex-start; /* PC版と同じ左寄せ */
     }
 
     .link-list {
-        justify-content: center; /* Center social icons */
-        gap: 10px;
+        justify-content: flex-start; /* PC版と同じ左揃え */
+        gap: 15px; /* PC版と同じギャップ */
     }
 
     .instagram-app-icon,
     .spotify-app-icon,
     .discord-app-icon {
-        width: 45px; /* Slightly larger icons for easier tapping */
-        height: 45px;
+        width: 40px; /* PC版と同じサイズ */
+        height: 40px; /* PC版と同じサイズ */
     }
 
     .default-button-link {
-        padding: 12px 18px;
-        font-size: 1em;
+        padding: 14px 20px; /* PC版と同じパディング */
+        font-size: 1.1em; /* PC版と同じフォントサイズ */
     }
 
     /* Music Player adjustments */
     #music-player-container {
-        max-width: 90vw; /* Use viewport width for better scaling */
-        padding: 15px; /* Adjust padding for mobile */
-        margin: 20px auto; /* Center it */
-        /* Keep flex-direction: column; as it stacks #music-player and other potential elements vertically */
-    }
-
-    #music-player {
-        width: 100%; /* Take full width of its container */
-        /* margin-bottom: 10px; */ /* Removed as progress bar is now inside song-playback-info */
-    }
-
-    .player-controls {
-    margin-right: 15px; /* 再生ボタンとアルバムアートの間にスペースを追加 */
-}
-
-    #play-pause-btn {
-        width: 60px; /* Larger play/pause button */
-        height: 60px;
-    }
-
-    .player-icon {
-        width: 28px;
-        height: 28px;
-    }
-
-    .song-details {
-        text-align: center;
+        max-width: 450px; /* PC版と同じ最大幅 */
+        width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
+        padding: 15px; /* PC版と同じパディング */
+        margin: 20px auto;
     }
 
     #album-art {
-        width: 80px; /* Larger album art */
-        height: 80px;
-        min-width: 80px;
-        margin-right: 15px; /* Add margin back for horizontal spacing */
-        margin-bottom: 0; /* Remove bottom margin */
+        width: 70px; /* PC版と同じサイズ */
+        height: 70px; /* PC版と同じサイズ */
+        min-width: 70px;
+        margin-right: 15px;
     }
 
     #song-title {
-        font-size: 1.1em; /* Slightly larger song title */
+        font-size: 16px; /* PC版と同じフォントサイズ */
     }
 
     #song-artist {
-        font-size: 0.9em; /* Slightly larger artist name */
+        font-size: 12px; /* PC版と同じフォントサイズ */
+    }
+
+    #play-pause-btn, .player-btn {
+        width: 55px; /* PC版と同じサイズ */
+        height: 55px; /* PC版と同じサイズ */
+    }
+
+    .player-icon {
+        width: 28px; /* PC版と同じサイズ */
+        height: 28px; /* PC版と同じサイズ */
     }
 
     /* Volume controls */
     #volume-container {
-        top: auto;
-        bottom: 20px; /* Move to bottom left */
+        top: 20px; /* PC版と同じ位置 */
+        bottom: auto; /* bottom指定を解除 */
         left: 20px;
         flex-direction: row;
     }
 
     #mute-toggle {
-        width: 55px; /* Larger mute button */
-        height: 55px;
+        width: 48px; /* PC版と同じサイズ */
+        height: 48px; /* PC版と同じサイズ */
     }
 
     .volume-icon {
-        width: 28px;
-        height: 28px;
+        width: 24px; /* PC版と同じサイズ */
+        height: 24px; /* PC版と同じサイズ */
     }
 
     #volume-container:hover .volume-slider {
-        width: 120px; /* Slightly wider slider on hover */
+        width: 100px; /* PC版と同じ幅 */
     }
 
     /* Clock adjustments */
     #clock-container {
-        padding: 15px 30px;
+        padding: 20px 40px; /* PC版と同じパディング */
     }
 
     #clock {
-        font-size: 2.8em; /* Smaller clock font */
+        font-size: 3.5em; /* PC版と同じフォントサイズ */
     }
 
     #date {
-        font-size: 1em; /* Smaller date font */
+        font-size: 1.2em; /* PC版と同じフォントサイズ */
     }
 
     /* Scroll navigation dots */
     #scroll-nav {
-        right: 10px; /* Move dots slightly inward */
-        gap: 10px;
+        right: 20px; /* PC版と同じ位置 */
+        gap: 15px; /* PC版と同じギャップ */
     }
 
     #scroll-nav a {
-        width: 8px; /* Smaller dots */
-        height: 8px;
+        width: 10px; /* PC版と同じサイズ */
+        height: 10px; /* PC版と同じサイズ */
     }
 }
