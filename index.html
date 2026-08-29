@@ -217,7 +217,9 @@
         }
 
         // Initial load
-        loadSong(currentSongIndex); // 初期ロード時は再生しない
+        loadSong(currentSongIndex);
+        updatePlayPauseIcon(); // 初期ロード時にUIを一時停止状態に設定
+        playMusic(); // サイトアクセス時に自動再生を開始
 
         // --- Volume Control ---
         let lastVolume = 0.6; // デフォルト音量を60%に設定
