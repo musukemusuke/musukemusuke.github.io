@@ -218,8 +218,11 @@
 
         // Initial load
         loadSong(currentSongIndex);
-        updatePlayPauseIcon(); // 初期ロード時にUIを一時停止状態に設定
-        playMusic(); // サイトアクセス時に自動再生を開始
+        audioPlayer.volume = volumeSlider.value; // Set initial volume
+        updatePlayPauseIcon(); // UIを初期状態に同期
+
+        // サイトアクセス時の自動再生
+        playMusic(); // これがサイトアクセス時の自動再生を担う
 
         // --- Volume Control ---
         let lastVolume = 0.6; // デフォルト音量を60%に設定
