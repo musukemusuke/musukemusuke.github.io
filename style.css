@@ -155,32 +155,7 @@ h1 {
     flex-shrink: 0;
 }
 
-/* Spotifyボタンのスタイル */
-#spotify-link {
-    /* .link-list a のスタイルを完全にリセットし、アイコンとしてのスタイルを適用 */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent !important; /* 背景色なし */
-    color: #e0e0e0; /* テキスト色（アイコンには影響しないが念のため） */
-    padding: 0 !important; /* パディングなし */
-    border-radius: 0 !important; /* 角丸なし */
-    text-decoration: none;
-    font-size: 1em; /* フォントサイズ（アイコンには影響しないが念のため） */
-    font-weight: normal; /* フォントウェイト（アイコンには影響しないが念のため） */
-    box-shadow: none;
-    transform: none;
-    /* transition: transform 0.2s ease; */ /* ホバー時のアニメーション */
 
-    /* アイコンとしてのサイズ設定 */
-    width: 40px;
-    height: 40px;
-}
-
-#spotify-link:hover {
-    background-color: transparent !important; /* ホバー時も背景は透明 */
-    transform: scale(1.1); /* ホバー時に少し拡大 */
-}
 
 .instagram-app-icon,
 .spotify-app-icon,
@@ -695,12 +670,7 @@ h1 {
         gap: 10px; /* PC版と同じギャップ */
     }
 
-    .instagram-app-icon,
-    .spotify-app-icon,
-    .discord-app-icon {
-        width: 40px; /* PC版と同じサイズ */
-        height: 40px; /* PC版と同じサイズ */
-    }
+
 
     .default-button-link {
         padding: 14px 20px; /* PC版と同じパディング */
