@@ -155,25 +155,6 @@ h1 {
     flex-shrink: 0;
 }
 
-.jiffcy-app-icon {
-    width: 60px; /* 明示的な幅 */
-    height: 60px; /* 明示的な高さ */
-    object-fit: contain; /* 画像が要素内に収まるように調整 */
-    flex-shrink: 0; /* 縮小されないように */
-    transition: transform 0.2s ease-in-out; /* ホバーアニメーション */
-    filter: brightness(0) invert(1); /* アイコンを白に近づける */
-    /* position: relative; */ /* 位置調整をtransformで行うためコメントアウト */
-    /* top: -10px; */ /* 位置調整をtransformで行うためコメントアウト */
-    /* left: -10px; */ /* 位置調整をtransformで行うためコメントアウト */
-    transform: translate(-10px, -10px) scale(1); /* 左に10px、上に10px移動し、通常時は拡大率1倍 */
-    transform-origin: center center; /* 変形の基準点を中心に設定 */
-    image-rendering: crisp-edges; /* 拡大時の画質を改善 */
-}
-
-.jiffcy-app-icon:hover {
-    transform: translate(-10px, -10px) scale(1.1); /* ホバー時は位置を維持しつつ1.1倍に拡大 */
-}
-
 /* Spotifyボタンのスタイル */
 #spotify-link {
     /* .link-list a のスタイルを完全にリセットし、アイコンとしてのスタイルを適用 */
@@ -510,9 +491,6 @@ h1 {
     scroll-snap-align: start;
 }
 
-.card:nth-of-type(2) {
-}
-
 #scroll-nav {
     position: fixed;
     top: 50%;
@@ -553,12 +531,6 @@ h1 {
 .card:nth-child(1) .card-content,
 .card:nth-child(3) .card-content {
     flex-direction: column;
-}
-
-.card:nth-child(3) .card-content p {
-    margin: 0; /* デフォルトのマージンをリセット */
-    text-align: center; /* テキストを中央揃え */
-    width: 100%; /* 親要素の幅いっぱいに広げる */
 }
 
 #clock-container {
@@ -694,23 +666,18 @@ h1 {
 @media (max-width: 768px) {
     /* General adjustments */
     .container {
-        padding: 20px; /* モバイル向けにパディングを調整 */
-        max-width: 250px; /* モバイル向けに最大幅をさらに調整 */
-        width: 80vw; /* 画面幅が450pxより狭い場合は80vwを使用 */
-    }
-
-    /* カード1の位置を左に調整 */
-    .card:nth-child(1) .container {
-        transform: translateX(-20%); /* 左に20%移動 */
+        padding: 30px; /* PC版と同じパディング */
+        max-width: 350px; /* PC版と同じ最大幅 */
+        width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
     }
 
     h1 {
-        font-size: 1.8em; /* モバイル向けにフォントサイズを調整 */
+        font-size: 2.2em; /* PC版と同じフォントサイズ */
     }
 
     .user-avatar {
-        width: 120px; /* モバイル向けにサイズを調整 */
-        height: 120px; /* モバイル向けにサイズを調整 */
+        width: 150px; /* PC版と同じサイズ */
+        height: 150px; /* PC版と同じサイズ */
     }
 
     .profile-group {
@@ -724,21 +691,15 @@ h1 {
     }
 
     .link-list {
-        justify-content: space-evenly; /* モバイル向けに均等配置 */
-        gap: 10px; /* モバイル向けにギャップを調整 */
-        align-items: center; /* アイコンの垂直方向の配置を保証 */
+        justify-content: center; /* PC版と同じ左揃え */
+        gap: 10px; /* PC版と同じギャップ */
     }
 
     .instagram-app-icon,
     .spotify-app-icon,
-    .discord-app-icon,
-    .jiffcy-app-icon { /* Jiffcyアイコンもモバイル向けに調整 */
-        width: 35px; /* モバイル向けにサイズを調整 */
-        height: 35px; /* モバイル向けにサイズを調整 */
-        transform: none; /* デスクトップのtransformをリセット */
-    }
-    .jiffcy-app-icon:hover {
-        transform: scale(1.1); /* モバイルでは拡大のみ */
+    .discord-app-icon {
+        width: 40px; /* PC版と同じサイズ */
+        height: 40px; /* PC版と同じサイズ */
     }
 
     .default-button-link {
@@ -746,43 +707,37 @@ h1 {
         font-size: 1.1em; /* PC版と同じフォントサイズ */
     }
 
-    /* Card 2 Content - Clock and Music Player */
-    .card:nth-of-type(2) .card-content {
-        flex-direction: column; /* 時計と音楽プレイヤーを縦に並べる */
-        gap: 20px; /* 要素間のギャップを調整 */
-    }
-
     /* Music Player adjustments */
     #music-player-container {
-        max-width: 280px; /* モバイル向けに最大幅を調整 */
-        width: 85vw; /* 画面幅が450pxより狭い場合は85vwを使用 */
-        padding: 10px; /* モバイル向けにパディングを調整 */
-        margin: 0 auto; /* 水平方向の中央揃え */
+        max-width: 350px; /* PC版と同じ最大幅 */
+        width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
+        padding: 15px; /* PC版と同じパディング */
+        /* margin: 20px auto; */ /* 垂直中央揃えのため削除 */
     }
 
     #album-art {
-        width: 60px; /* モバイル向けにサイズを調整 */
-        height: 60px; /* モバイル向けにサイズを調整 */
-        min-width: 60px;
+        width: 80px; /* PC版と同じサイズ */
+        height: 80px; /* PC版と同じサイズ */
+        min-width: 80px;
         margin-right: 10px;
     }
 
     #song-title {
-        font-size: 14px; /* モバイル向けにフォントサイズを調整 */
+        font-size: 16px; /* PC版と同じフォントサイズ */
     }
 
     #song-artist {
-        font-size: 0.8em; /* モバイル向けにフォントサイズを調整 */
+        font-size: 0.9em; /* PC版と同じフォントサイズ */
     }
 
     #play-pause-btn, .player-btn {
-        width: 45px; /* モバイル向けにサイズを調整 */
-        height: 45px; /* モバイル向けにサイズを調整 */
+        width: 55px; /* PC版と同じサイズ */
+        height: 55px; /* PC版と同じサイズ */
     }
 
     .player-icon {
-        width: 24px; /* モバイル向けにサイズを調整 */
-        height: 24px; /* モバイル向けにサイズを調整 */
+        width: 28px; /* PC版と同じサイズ */
+        height: 28px; /* PC版と同じサイズ */
     }
 
     /* Volume controls */
@@ -810,11 +765,12 @@ h1 {
     /* Clock adjustments */
     #clock-container {
         padding: 20px 40px; /* PC版と同じパディング */
-        margin: 0 auto; /* 水平方向の中央揃え */
     }
 
+
+
     #date {
-        font-size: 1.2em;
+        font-size: 1.2em; /* PC版と同じフォントサイズ */
     }
 
     /* Scroll navigation dots */
@@ -826,12 +782,5 @@ h1 {
     #scroll-nav a {
         width: 10px; /* PC版と同じサイズ */
         height: 10px; /* PC版と同じサイズ */
-    }
-
-    /* Card 3 Content - "I like apples." */
-    .card:nth-child(3) .card-content {
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
     }
 }
