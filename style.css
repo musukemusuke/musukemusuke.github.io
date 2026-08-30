@@ -699,6 +699,11 @@ h1 {
         width: 80vw; /* 画面幅が450pxより狭い場合は80vwを使用 */
     }
 
+    /* カード1の位置を左に調整 */
+    .card:nth-child(1) .container {
+        transform: translateX(-10%); /* 左に10%移動 */
+    }
+
     h1 {
         font-size: 1.8em; /* モバイル向けにフォントサイズを調整 */
     }
