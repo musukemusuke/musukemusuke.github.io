@@ -688,18 +688,18 @@ h1 {
 @media (max-width: 768px) {
     /* General adjustments */
     .container {
-        padding: 30px; /* PC版と同じパディング */
-        max-width: 350px; /* PC版と同じ最大幅 */
+        padding: 20px; /* モバイル向けにパディングを調整 */
+        max-width: 300px; /* モバイル向けに最大幅を調整 */
         width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
     }
 
     h1 {
-        font-size: 2.2em; /* PC版と同じフォントサイズ */
+        font-size: 1.8em; /* モバイル向けにフォントサイズを調整 */
     }
 
     .user-avatar {
-        width: 150px; /* PC版と同じサイズ */
-        height: 150px; /* PC版と同じサイズ */
+        width: 120px; /* モバイル向けにサイズを調整 */
+        height: 120px; /* モバイル向けにサイズを調整 */
     }
 
     .profile-group {
@@ -714,15 +714,15 @@ h1 {
 
     .link-list {
         justify-content: center; /* PC版と同じ左揃え */
-        gap: 20px; /* タップしやすさのためギャップを広げる */
+        gap: 15px; /* モバイル向けにギャップを広げる */
     }
 
     .instagram-app-icon,
     .spotify-app-icon,
     .discord-app-icon,
-    .jiffcy-app-icon { /* Jiffcyアイコンもモバイルで調整 */
-        width: 50px; /* タップしやすさのためサイズを大きく */
-        height: 50px; /* タップしやすさのためサイズを大きく */
+    .jiffcy-app-icon { /* Jiffcyアイコンもモバイル向けに調整 */
+        width: 35px; /* モバイル向けにサイズを調整 */
+        height: 35px; /* モバイル向けにサイズを調整 */
     }
 
     .default-button-link {
@@ -732,30 +732,30 @@ h1 {
 
     /* Music Player adjustments */
     #music-player-container {
-        max-width: 350px; /* PC版と同じ最大幅 */
+        max-width: 300px; /* モバイル向けに最大幅を調整 */
         width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
-        padding: 15px; /* PC版と同じパディング */
+        padding: 10px; /* モバイル向けにパディングを調整 */
         /* margin: 20px auto; */ /* 垂直中央揃えのため削除 */
     }
 
     #album-art {
-        width: 80px; /* PC版と同じサイズ */
-        height: 80px; /* PC版と同じサイズ */
-        min-width: 80px;
+        width: 60px; /* モバイル向けにサイズを調整 */
+        height: 60px; /* モバイル向けにサイズを調整 */
+        min-width: 60px;
         margin-right: 10px;
     }
 
     #song-title {
-        font-size: 16px; /* PC版と同じフォントサイズ */
+        font-size: 14px; /* モバイル向けにフォントサイズを調整 */
     }
 
     #song-artist {
-        font-size: 0.9em; /* PC版と同じフォントサイズ */
+        font-size: 0.8em; /* モバイル向けにフォントサイズを調整 */
     }
 
     #play-pause-btn, .player-btn {
-        width: 65px; /* タップしやすさのためサイズを大きく */
-        height: 65px; /* タップしやすさのためサイズを大きく */
+        width: 45px; /* モバイル向けにサイズを調整 */
+        height: 45px; /* モバイル向けにサイズを調整 */
     }
 
     .player-icon {
@@ -799,11 +799,11 @@ h1 {
     /* Scroll navigation dots */
     #scroll-nav {
         right: 20px; /* PC版と同じ位置 */
-        gap: 20px; /* タップしやすさのためギャップを広げる */
+        gap: 15px; /* PC版と同じギャップ */
     }
 
     #scroll-nav a {
-        width: 15px; /* タップしやすさのためサイズを大きく */
-        height: 15px; /* タップしやすさのためサイズを大きく */
+        width: 10px; /* PC版と同じサイズ */
+        height: 10px; /* PC版と同じサイズ */
     }
 }
