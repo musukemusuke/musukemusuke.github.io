@@ -715,6 +715,7 @@ h1 {
     .link-list {
         justify-content: space-evenly; /* モバイル向けに均等配置 */
         gap: 10px; /* モバイル向けにギャップを調整 */
+        align-items: center; /* アイコンの垂直方向の配置を保証 */
     }
 
     .instagram-app-icon,
@@ -723,7 +724,9 @@ h1 {
     .jiffcy-app-icon { /* Jiffcyアイコンもモバイル向けに調整 */
         width: 35px; /* モバイル向けにサイズを調整 */
         height: 35px; /* モバイル向けにサイズを調整 */
-        transform: none; /* モバイルでは位置調整をリセット */
+        transform: none; /* デスクトップのtransformをリセット */
+        vertical-align: middle; /* 垂直方向の配置を保証 */
+        margin: 0; /* 余分なマージンをなくす */
     }
     .jiffcy-app-icon:hover {
         transform: scale(1.1); /* モバイルでは拡大のみ */
@@ -734,12 +737,18 @@ h1 {
         font-size: 1.1em; /* PC版と同じフォントサイズ */
     }
 
+    /* Card 2 Content - Clock and Music Player */
+    .card:nth-of-type(2) .card-content {
+        flex-direction: column; /* 時計と音楽プレイヤーを縦に並べる */
+        gap: 20px; /* 要素間のギャップを調整 */
+    }
+
     /* Music Player adjustments */
     #music-player-container {
         max-width: 300px; /* モバイル向けに最大幅を調整 */
         width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
         padding: 10px; /* モバイル向けにパディングを調整 */
-        /* margin: 20px auto; */ /* 垂直中央揃えのため削除 */
+        margin: 0 auto; /* 水平方向の中央揃え */
     }
 
     #album-art {
@@ -792,12 +801,11 @@ h1 {
     /* Clock adjustments */
     #clock-container {
         padding: 20px 40px; /* PC版と同じパディング */
+        margin: 0 auto; /* 水平方向の中央揃え */
     }
 
-
-
     #date {
-        font-size: 1.2em; /* PC版と同じフォントサイズ */
+        font-size: 1.2em;
     }
 
     /* Scroll navigation dots */
@@ -809,5 +817,12 @@ h1 {
     #scroll-nav a {
         width: 10px; /* PC版と同じサイズ */
         height: 10px; /* PC版と同じサイズ */
+    }
+
+    /* Card 3 Content - "I like apples." */
+    .card:nth-child(3) .card-content {
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
 }
