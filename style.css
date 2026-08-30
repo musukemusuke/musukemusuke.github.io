@@ -701,7 +701,7 @@ h1 {
 
     /* カード1の位置を左に調整 */
     .card:nth-child(1) .container {
-        transform: translateX(-10%); /* 左に10%移動 */
+        transform: translateX(-20%); /* 左に20%移動 */
     }
 
     h1 {
