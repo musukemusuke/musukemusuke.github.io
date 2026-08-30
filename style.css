@@ -723,6 +723,10 @@ h1 {
     .jiffcy-app-icon { /* Jiffcyアイコンもモバイル向けに調整 */
         width: 35px; /* モバイル向けにサイズを調整 */
         height: 35px; /* モバイル向けにサイズを調整 */
+        transform: none; /* モバイルでは位置調整をリセット */
+    }
+    .jiffcy-app-icon:hover {
+        transform: scale(1.1); /* モバイルでは拡大のみ */
     }
 
     .default-button-link {
