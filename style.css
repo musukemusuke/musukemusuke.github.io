@@ -1,0 +1,813 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap');
+
+html {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #111111; /* より深みのあるダークグレーに変更 */
+    color: #e0e0e0;
+    overflow-y: hidden; /* bodyの垂直スクロールは防ぐが、!importantは削除 */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.container {
+    background-color: transparent; /* 完全に透明 */
+    backdrop-filter: none; /* ぼかしを削除 */
+    -webkit-backdrop-filter: none; /* ぼかしを削除 */
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: none;
+    text-align: center;
+    width: 100%;
+    max-width: 450px;
+    border: none;
+    position: relative; /* 絶対位置指定の基準 */
+    transform-style: preserve-3d; /* 3D空間を有効にする */
+    transition: transform 0.1s linear; /* 動きを滑らかにする */
+}
+
+.user-avatar, .profile-info h1, .link-list {
+    will-change: transform;
+    transition: transform 0.1s linear;
+}
+
+h1 {
+    font-size: 2.2em;
+    margin-bottom: 15px; /* リンクリストとの間に少し余白 */
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.profile-group {
+    display: flex; /* アバターと名前・リンクを横並びにする */
+    align-items: center; /* 垂直方向の中央揃え */
+    gap: 20px; /* アバターと名前・リンクの間のスペース */
+    margin: 0 auto 30px auto; /* 上下20px、左右自動で中央寄せ、下部に30pxの余白 */
+    max-width: fit-content; /* コンテンツの幅に合わせる */
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column; /* 名前とリンクを縦並びにする */
+    align-items: flex-start; /* 左寄せ */
+}
+
+.user-avatar {
+    width: 150px; /* アバターのサイズを大きく */
+    height: 150px; /* アバターのサイズを大きく */
+    border-radius: 15px; /* 角丸にする */
+    object-fit: cover; /* 画像が枠に収まるように */
+    flex-shrink: 0;
+}
+
+.link-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 0; /* h1とのマージンはprofile-infoで調整 */
+    display: flex; /* Flexboxコンテナにする */
+    flex-direction: row; /* 横並びにする */
+    justify-content: flex-start; /* 左揃えにする */
+    gap: 15px; /* リンク間のスペース */
+}
+
+.link-list li {
+    /* 各リストアイテムの中央揃えは親要素で処理するため削除 */
+    margin-bottom: 0; /* 縦方向のマージンは不要 */
+}
+
+.link-list a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    /* transition: transform 0.2s ease; */ /* ホバー時の変形のみ残す */
+}
+
+.link-list a:hover {
+    transform: translateY(-2px); /* ホバー時の変形のみ残す */
+}
+
+/* デフォルトのボタンリンクスタイル */
+.default-button-link {
+    background-color: #5865f2;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+    /* transition: background-color 0.3s ease, transform 0.2s ease; */
+}
+
+.default-button-link:hover {
+    background-color: #4752c4;
+    transform: translateY(-2px);
+}
+
+.discord-link-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Discordリンクのスタイル (ロゴ自体) */
+#discord-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: #e0e0e0;
+    padding: 0;
+    border-radius: 0;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: normal;
+    box-shadow: none;
+    transform: none;
+    /* transition: transform 0.2s ease; */
+
+    width: 40px;
+    height: 40px;
+}
+
+#discord-link:hover {
+    background-color: transparent;
+    transform: scale(1.1);
+}
+
+.discord-app-icon {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+.jiffcy-app-icon {
+    width: 60px; /* 明示的な幅 */
+    height: 60px; /* 明示的な高さ */
+    object-fit: contain; /* 画像が要素内に収まるように調整 */
+    flex-shrink: 0; /* 縮小されないように */
+    transition: transform 0.2s ease-in-out; /* ホバーアニメーション */
+    filter: brightness(0) invert(1); /* アイコンを白に近づける */
+    /* position: relative; */ /* 位置調整をtransformで行うためコメントアウト */
+    /* top: -10px; */ /* 位置調整をtransformで行うためコメントアウト */
+    /* left: -10px; */ /* 位置調整をtransformで行うためコメントアウト */
+    transform: translate(-10px, -10px) scale(1); /* 左に10px、上に10px移動し、通常時は拡大率1倍 */
+    transform-origin: center center; /* 変形の基準点を中心に設定 */
+    image-rendering: crisp-edges; /* 拡大時の画質を改善 */
+}
+
+.jiffcy-app-icon:hover {
+    transform: translate(-10px, -10px) scale(1.1); /* ホバー時は位置を維持しつつ1.1倍に拡大 */
+}
+
+/* Spotifyボタンのスタイル */
+#spotify-link {
+    /* .link-list a のスタイルを完全にリセットし、アイコンとしてのスタイルを適用 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent !important; /* 背景色なし */
+    color: #e0e0e0; /* テキスト色（アイコンには影響しないが念のため） */
+    padding: 0 !important; /* パディングなし */
+    border-radius: 0 !important; /* 角丸なし */
+    text-decoration: none;
+    font-size: 1em; /* フォントサイズ（アイコンには影響しないが念のため） */
+    font-weight: normal; /* フォントウェイト（アイコンには影響しないが念のため） */
+    box-shadow: none;
+    transform: none;
+    /* transition: transform 0.2s ease; */ /* ホバー時のアニメーション */
+
+    /* アイコンとしてのサイズ設定 */
+    width: 40px;
+    height: 40px;
+}
+
+#spotify-link:hover {
+    background-color: transparent !important; /* ホバー時も背景は透明 */
+    transform: scale(1.1); /* ホバー時に少し拡大 */
+}
+
+.instagram-app-icon,
+.spotify-app-icon,
+.discord-app-icon {
+    width: 40px; /* 明示的な幅 */
+    height: 40px; /* 明示的な高さ */
+    object-fit: contain; /* 画像が要素内に収まるように調整 */
+    flex-shrink: 0; /* 縮小されないように */
+    transition: transform 0.2s ease-in-out; /* ホバーアニメーション */
+}
+
+.instagram-app-icon {
+    fill: #FFFFFF; /* Instagramのブランドカラーを白に変更 */
+}
+
+.spotify-app-icon {
+    fill: #FFFFFF; /* Spotifyのブランドカラーを白に変更 */
+}
+
+.discord-app-icon {
+    fill: #FFFFFF; /* Discordのブランドカラーを白に変更 */
+}
+
+.instagram-app-icon:hover,
+.spotify-app-icon:hover,
+.discord-app-icon:hover {
+    transform: scale(1.1); /* ホバー時に1.1倍に拡大 */
+}
+
+
+
+#music-player-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* 親要素の幅を最大限に利用 */
+    max-width: 450px; /* プログレスバーを長くするために最大幅を調整 */
+    /* margin: 20px auto; */
+    
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.player-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px; /* ヘッダーとコントロールの間にスペース */
+}
+
+#album-art {
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    border-radius: 5px;
+    margin-right: 15px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.song-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+    min-width: 300px; /* 短い曲名でも一定の幅を保つ */
+}
+
+#song-title {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#song-artist {
+    font-size: 12px;
+    color: #aaa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-controls {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 15px; /* コントロールとプログレスバーの間にスペース */
+}
+
+#play-pause-btn {
+    width: 55px;
+    height: 55px;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    transition: background-color 0.2s ease;
+}
+
+#play-pause-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.player-icon {
+    width: 28px;
+    height: 28px;
+    fill: white; /* アイコンの色を白に明示的に設定 */
+}
+
+.player-btn {
+    width: 55px;
+    height: 55px;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    transition: background-color 0.2s ease;
+    margin: 0 5px; /* ボタン間のスペース */
+}
+
+.player-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+
+@media (max-width: 768px) {
+    /* Music Player adjustments */
+    #music-player-container {
+        max-width: 90vw;
+        padding: 15px;
+        margin: 20px auto;
+    }
+
+    .player-header {
+        margin-bottom: 15px;
+    }
+
+    #album-art {
+        width: 80px;
+        height: 80px;
+        min-width: 80px;
+        margin-right: 15px;
+    }
+
+    #song-title {
+        font-size: 1.1em;
+    }
+
+    #song-artist {
+        font-size: 0.9em;
+    }
+
+    .player-controls {
+        margin-bottom: 10px;
+    }
+
+    #play-pause-btn {
+        width: 60px;
+        height: 60px;
+    }
+
+    .player-icon {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* Instagramリンクのスタイル */
+#instagram-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent !important;
+    color: #e0e0e0;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: normal;
+    box-shadow: none;
+    transform: none;
+    /* transition: transform 0.2s ease; */
+
+    /* アイコンとしてのサイズ設定 */
+    width: 40px;
+    height: 40px;
+}
+
+#instagram-link:hover {
+    background-color: transparent !important;
+    transform: scale(1.1);
+}
+
+.instagram-app-icon {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+#volume-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+}
+
+#mute-toggle {
+    background-color: transparent;
+
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    transition: background-color 0.3s ease;
+}
+
+#mute-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.volume-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.1); /* よりデザインに合う色合いに調整 */
+    border-radius: 5px;
+    outline: none;
+    opacity: 0;
+    transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    cursor: pointer;
+    background-image: linear-gradient(to right, white var(--value-percent, 0%), transparent var(--value-percent, 0%));
+}
+
+#volume-container:hover .volume-slider {
+    width: 100px;
+    opacity: 0.7;
+}
+
+.volume-slider:hover {
+    opacity: 1;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+
+#scroll-container {
+    height: 100vh;
+    overflow-y: scroll; /* 初期状態ではスクロールを隠す */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    /* visibility: hidden; */ /* 初期状態では非表示 */
+}
+
+#scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.card {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+}
+
+.card:nth-of-type(2) {
+}
+
+#scroll-nav {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 10;
+}
+
+#scroll-nav a {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+#scroll-nav a.active {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+/* Card 2 Content */
+.card-content {
+    display: flex;
+    flex-direction: row; /* デフォルトを横並びに変更 */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    gap: 20px; /* 要素間のスペース */
+    flex-wrap: wrap; /* 折り返しを許可 */
+}
+
+/* 1枚目と3枚目のカードは縦並びに戻す */
+.card:nth-child(1) .card-content,
+.card:nth-child(3) .card-content {
+    flex-direction: column;
+}
+
+#clock-container {
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    color: #ffffff;
+    padding: 20px 40px;
+}
+
+#progress-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+#progress-bar {
+    flex-grow: 1;
+    height: 3px;
+    background-color: #555;
+    border-radius: 1.5px;
+    cursor: pointer;
+    position: relative;
+}
+
+#progress-filled {
+    height: 100%;
+    width: 0%;
+    background-color: #1DB954;
+    border-radius: 1.5px;
+}
+
+#time-display {
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+
+
+#date {
+    font-size: 1.2em;
+    font-weight: 400;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    margin-top: 10px;
+}
+
+#analog-clock {
+    width: 200px;
+    height: 200px;
+    border: 5px solid #cccccc; /* Light gray bezel */
+    border-radius: 50%;
+    position: relative;
+    margin: 20px auto;
+    background-color: #ffffff; /* White face */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Softer shadow */
+    overflow: hidden; /* Ensure hands and markers stay within bounds */
+}
+
+.hand {
+    position: absolute;
+    transform-origin: bottom center;
+    background-color: #000000; /* Black hands */
+    border-radius: 2px;
+    z-index: 10;
+}
+
+.hour {
+    width: 6px; /* Thicker hour hand */
+    height: 50px; /* Shorter hour hand */
+    top: 50px; /* Adjust top to keep origin at center */
+    left: calc(50% - 3px);
+}
+
+.minute {
+    width: 4px; /* Thicker minute hand */
+    height: 70px; /* Longer minute hand */
+    top: 30px; /* Adjust top */
+    left: calc(50% - 2px);
+}
+
+.second {
+    width: 2px;
+    height: 85px; /* Slightly shorter second hand */
+    top: 15px; /* Adjust top */
+    left: calc(50% - 1px);
+    background-color: #000000; /* Black second hand */
+}
+
+.center-dot {
+    width: 10px; /* Slightly smaller */
+    height: 10px;
+    background-color: #000000; /* Black center dot */
+    border-radius: 50%;
+    position: absolute;
+    top: calc(50% - 5px);
+    left: calc(50% - 5px);
+    z-index: 15;
+}
+
+/* Base tick mark style (for minute marks) */
+.tick-mark {
+    position: absolute;
+    width: 1px; /* Thin minute mark */
+    height: 5px; /* Short minute mark */
+    background-color: #000000;
+    top: 0; /* Start at the top edge of the clock */
+    left: calc(50% - 0.5px); /* Center horizontally */
+    transform-origin: 50% 100px; /* Rotate around the center of the clock (radius 100px) */
+    transform: rotate(var(--rotation));
+}
+
+/* Hour marks (every 5th tick) */
+.hour-mark {
+    width: 2px; /* Medium thickness for minor hour marks */
+    height: 10px; /* Medium length for minor hour marks */
+    left: calc(50% - 1px); /* Center horizontally for wider mark */
+}
+
+/* Major hour marks (12, 3, 6, 9 o'clock) */
+.tick-mark[style*="--rotation: 0deg;"],
+.tick-mark[style*="--rotation: 90deg;"],
+.tick-mark[style*="--rotation: 180deg;"],
+.tick-mark[style*="--rotation: 270deg;"] {
+    width: 3px; /* Thicker for major hour marks */
+    height: 15px; /* Longer for major hour marks */
+    left: calc(50% - 1.5px); /* Center horizontally for wider mark */
+}
+
+
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    /* General adjustments */
+    .container {
+        padding: 20px; /* モバイル向けにパディングを調整 */
+        max-width: 300px; /* モバイル向けに最大幅を調整 */
+        width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
+    }
+
+    h1 {
+        font-size: 1.8em; /* モバイル向けにフォントサイズを調整 */
+    }
+
+    .user-avatar {
+        width: 120px; /* モバイル向けにサイズを調整 */
+        height: 120px; /* モバイル向けにサイズを調整 */
+    }
+
+    .profile-group {
+        flex-direction: row; /* PC版と同じ横並びを維持 */
+        gap: 15px; /* PC版と同じギャップ */
+        margin-bottom: 30px; /* PC版と同じマージン */
+    }
+
+    .profile-info {
+        align-items: flex-start; /* PC版と同じ左寄せ */
+    }
+
+    .link-list {
+        justify-content: space-evenly; /* モバイル向けに均等配置 */
+        gap: 10px; /* モバイル向けにギャップを調整 */
+    }
+
+    .instagram-app-icon,
+    .spotify-app-icon,
+    .discord-app-icon,
+    .jiffcy-app-icon { /* Jiffcyアイコンもモバイル向けに調整 */
+        width: 35px; /* モバイル向けにサイズを調整 */
+        height: 35px; /* モバイル向けにサイズを調整 */
+        transform: none; /* モバイルでは位置調整をリセット */
+    }
+    .jiffcy-app-icon:hover {
+        transform: scale(1.1); /* モバイルでは拡大のみ */
+    }
+
+    .default-button-link {
+        padding: 14px 20px; /* PC版と同じパディング */
+        font-size: 1.1em; /* PC版と同じフォントサイズ */
+    }
+
+    /* Music Player adjustments */
+    #music-player-container {
+        max-width: 300px; /* モバイル向けに最大幅を調整 */
+        width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
+        padding: 10px; /* モバイル向けにパディングを調整 */
+        /* margin: 20px auto; */ /* 垂直中央揃えのため削除 */
+    }
+
+    #album-art {
+        width: 60px; /* モバイル向けにサイズを調整 */
+        height: 60px; /* モバイル向けにサイズを調整 */
+        min-width: 60px;
+        margin-right: 10px;
+    }
+
+    #song-title {
+        font-size: 14px; /* モバイル向けにフォントサイズを調整 */
+    }
+
+    #song-artist {
+        font-size: 0.8em; /* モバイル向けにフォントサイズを調整 */
+    }
+
+    #play-pause-btn, .player-btn {
+        width: 45px; /* モバイル向けにサイズを調整 */
+        height: 45px; /* モバイル向けにサイズを調整 */
+    }
+
+    .player-icon {
+        width: 24px; /* モバイル向けにサイズを調整 */
+        height: 24px; /* モバイル向けにサイズを調整 */
+    }
+
+    /* Volume controls */
+    #volume-container {
+        top: 20px; /* PC版と同じ位置 */
+        bottom: auto; /* bottom指定を解除 */
+        left: 20px;
+        flex-direction: row;
+    }
+
+    #mute-toggle {
+        width: 48px; /* PC版と同じサイズ */
+        height: 48px; /* PC版と同じサイズ */
+    }
+
+    .volume-icon {
+        width: 24px; /* PC版と同じサイズ */
+        height: 24px; /* PC版と同じサイズ */
+    }
+
+    #volume-container:hover .volume-slider {
+        width: 100px; /* PC版と同じ幅 */
+    }
+
+    /* Clock adjustments */
+    #clock-container {
+        padding: 20px 40px; /* PC版と同じパディング */
+    }
+
+
+
+    #date {
+        font-size: 1.2em; /* PC版と同じフォントサイズ */
+    }
+
+    /* Scroll navigation dots */
+    #scroll-nav {
+        right: 20px; /* PC版と同じ位置 */
+        gap: 15px; /* PC版と同じギャップ */
+    }
+
+    #scroll-nav a {
+        width: 10px; /* PC版と同じサイズ */
+        height: 10px; /* PC版と同じサイズ */
+    }
+}
