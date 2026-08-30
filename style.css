@@ -162,13 +162,16 @@ h1 {
     flex-shrink: 0; /* 縮小されないように */
     transition: transform 0.2s ease-in-out; /* ホバーアニメーション */
     filter: brightness(0) invert(1); /* アイコンを白に近づける */
-    position: relative; /* 相対位置指定を有効にする */
-    top: -10px; /* 上に10px移動 */
-    left: -10px; /* 左に10px移動 */
+    /* position: relative; */ /* 位置調整をtransformで行うためコメントアウト */
+    /* top: -10px; */ /* 位置調整をtransformで行うためコメントアウト */
+    /* left: -10px; */ /* 位置調整をtransformで行うためコメントアウト */
+    transform: translate(-10px, -10px) scale(1); /* 左に10px、上に10px移動し、通常時は拡大率1倍 */
+    transform-origin: center center; /* 変形の基準点を中心に設定 */
+    image-rendering: crisp-edges; /* 拡大時の画質を改善 */
 }
 
 .jiffcy-app-icon:hover {
-    transform: scale(1.1); /* ホバー時に1.1倍に拡大 */
+    transform: translate(-10px, -10px) scale(1.1); /* ホバー時は位置を維持しつつ1.1倍に拡大 */
 }
 
 /* Spotifyボタンのスタイル */
