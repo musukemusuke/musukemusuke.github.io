@@ -695,8 +695,8 @@ h1 {
     /* General adjustments */
     .container {
         padding: 20px; /* モバイル向けにパディングを調整 */
-        max-width: 280px; /* モバイル向けに最大幅を調整 */
-        width: 85vw; /* 画面幅が450pxより狭い場合は85vwを使用 */
+        max-width: 250px; /* モバイル向けに最大幅をさらに調整 */
+        width: 80vw; /* 画面幅が450pxより狭い場合は80vwを使用 */
     }
 
     h1 {
@@ -751,8 +751,8 @@ h1 {
 
     /* Music Player adjustments */
     #music-player-container {
-        max-width: 300px; /* モバイル向けに最大幅を調整 */
-        width: 90vw; /* 画面幅が450pxより狭い場合は90vwを使用 */
+        max-width: 280px; /* モバイル向けに最大幅を調整 */
+        width: 85vw; /* 画面幅が450pxより狭い場合は85vwを使用 */
         padding: 10px; /* モバイル向けにパディングを調整 */
         margin: 0 auto; /* 水平方向の中央揃え */
     }
