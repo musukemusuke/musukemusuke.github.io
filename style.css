@@ -155,6 +155,22 @@ h1 {
     flex-shrink: 0;
 }
 
+.jiffcy-app-icon {
+    width: 60px; /* 明示的な幅 */
+    height: 60px; /* 明示的な高さ */
+    object-fit: contain; /* 画像が要素内に収まるように調整 */
+    flex-shrink: 0; /* 縮小されないように */
+    transition: transform 0.2s ease-in-out; /* ホバーアニメーション */
+    filter: brightness(0) invert(1); /* アイコンを白に近づける */
+    position: relative; /* 相対位置指定を有効にする */
+    top: -10px; /* 上に10px移動 */
+    left: -10px; /* 左に10px移動 */
+}
+
+.jiffcy-app-icon:hover {
+    transform: scale(1.1); /* ホバー時に1.1倍に拡大 */
+}
+
 /* Spotifyボタンのスタイル */
 #spotify-link {
     /* .link-list a のスタイルを完全にリセットし、アイコンとしてのスタイルを適用 */
@@ -315,33 +331,7 @@ h1 {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-#progress-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 10px;
-}
 
-#progress-bar {
-    flex-grow: 1;
-    height: 3px;
-    background-color: #555;
-    border-radius: 1.5px;
-    cursor: pointer;
-    position: relative;
-}
-
-#progress-filled {
-    height: 100%;
-    width: 0%;
-    background-color: #1DB954;
-    border-radius: 1.5px;
-}
-
-#time-display {
-    font-size: 12px;
-    white-space: nowrap;
-}
 
 @media (max-width: 768px) {
     /* Music Player adjustments */
@@ -517,6 +507,9 @@ h1 {
     scroll-snap-align: start;
 }
 
+.card:nth-of-type(2) {
+}
+
 #scroll-nav {
     position: fixed;
     top: 50%;
@@ -543,9 +536,20 @@ h1 {
 /* Card 2 Content */
 .card-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* デフォルトを横並びに変更 */
+    justify-content: center;
     align-items: center;
-    gap: 40px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    gap: 20px; /* 要素間のスペース */
+    flex-wrap: wrap; /* 折り返しを許可 */
+}
+
+/* 1枚目と3枚目のカードは縦並びに戻す */
+.card:nth-child(1) .card-content,
+.card:nth-child(3) .card-content {
+    flex-direction: column;
 }
 
 #clock-container {
@@ -555,11 +559,35 @@ h1 {
     padding: 20px 40px;
 }
 
-#clock {
-    font-size: 3.5em;
-    font-weight: 600;
-    letter-spacing: 2px;
+#progress-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
 }
+
+#progress-bar {
+    flex-grow: 1;
+    height: 3px;
+    background-color: #555;
+    border-radius: 1.5px;
+    cursor: pointer;
+    position: relative;
+}
+
+#progress-filled {
+    height: 100%;
+    width: 0%;
+    background-color: #1DB954;
+    border-radius: 1.5px;
+}
+
+#time-display {
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+
 
 #date {
     font-size: 1.2em;
@@ -568,6 +596,90 @@ h1 {
     opacity: 0.8;
     margin-top: 10px;
 }
+
+#analog-clock {
+    width: 200px;
+    height: 200px;
+    border: 5px solid #cccccc; /* Light gray bezel */
+    border-radius: 50%;
+    position: relative;
+    margin: 20px auto;
+    background-color: #ffffff; /* White face */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Softer shadow */
+    overflow: hidden; /* Ensure hands and markers stay within bounds */
+}
+
+.hand {
+    position: absolute;
+    transform-origin: bottom center;
+    background-color: #000000; /* Black hands */
+    border-radius: 2px;
+    z-index: 10;
+}
+
+.hour {
+    width: 6px; /* Thicker hour hand */
+    height: 50px; /* Shorter hour hand */
+    top: 50px; /* Adjust top to keep origin at center */
+    left: calc(50% - 3px);
+}
+
+.minute {
+    width: 4px; /* Thicker minute hand */
+    height: 70px; /* Longer minute hand */
+    top: 30px; /* Adjust top */
+    left: calc(50% - 2px);
+}
+
+.second {
+    width: 2px;
+    height: 85px; /* Slightly shorter second hand */
+    top: 15px; /* Adjust top */
+    left: calc(50% - 1px);
+    background-color: #000000; /* Black second hand */
+}
+
+.center-dot {
+    width: 10px; /* Slightly smaller */
+    height: 10px;
+    background-color: #000000; /* Black center dot */
+    border-radius: 50%;
+    position: absolute;
+    top: calc(50% - 5px);
+    left: calc(50% - 5px);
+    z-index: 15;
+}
+
+/* Base tick mark style (for minute marks) */
+.tick-mark {
+    position: absolute;
+    width: 1px; /* Thin minute mark */
+    height: 5px; /* Short minute mark */
+    background-color: #000000;
+    top: 0; /* Start at the top edge of the clock */
+    left: calc(50% - 0.5px); /* Center horizontally */
+    transform-origin: 50% 100px; /* Rotate around the center of the clock (radius 100px) */
+    transform: rotate(var(--rotation));
+}
+
+/* Hour marks (every 5th tick) */
+.hour-mark {
+    width: 2px; /* Medium thickness for minor hour marks */
+    height: 10px; /* Medium length for minor hour marks */
+    left: calc(50% - 1px); /* Center horizontally for wider mark */
+}
+
+/* Major hour marks (12, 3, 6, 9 o'clock) */
+.tick-mark[style*="--rotation: 0deg;"],
+.tick-mark[style*="--rotation: 90deg;"],
+.tick-mark[style*="--rotation: 180deg;"],
+.tick-mark[style*="--rotation: 270deg;"] {
+    width: 3px; /* Thicker for major hour marks */
+    height: 15px; /* Longer for major hour marks */
+    left: calc(50% - 1.5px); /* Center horizontally for wider mark */
+}
+
+
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
@@ -674,9 +786,7 @@ h1 {
         padding: 20px 40px; /* PC版と同じパディング */
     }
 
-    #clock {
-        font-size: 3.5em; /* PC版と同じフォントサイズ */
-    }
+
 
     #date {
         font-size: 1.2em; /* PC版と同じフォントサイズ */
