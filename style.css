@@ -714,14 +714,15 @@ h1 {
 
     .link-list {
         justify-content: center; /* PC版と同じ左揃え */
-        gap: 10px; /* PC版と同じギャップ */
+        gap: 20px; /* タップしやすさのためギャップを広げる */
     }
 
     .instagram-app-icon,
     .spotify-app-icon,
-    .discord-app-icon {
-        width: 40px; /* PC版と同じサイズ */
-        height: 40px; /* PC版と同じサイズ */
+    .discord-app-icon,
+    .jiffcy-app-icon { /* Jiffcyアイコンもモバイルで調整 */
+        width: 50px; /* タップしやすさのためサイズを大きく */
+        height: 50px; /* タップしやすさのためサイズを大きく */
     }
 
     .default-button-link {
@@ -753,8 +754,8 @@ h1 {
     }
 
     #play-pause-btn, .player-btn {
-        width: 55px; /* PC版と同じサイズ */
-        height: 55px; /* PC版と同じサイズ */
+        width: 65px; /* タップしやすさのためサイズを大きく */
+        height: 65px; /* タップしやすさのためサイズを大きく */
     }
 
     .player-icon {
@@ -798,11 +799,11 @@ h1 {
     /* Scroll navigation dots */
     #scroll-nav {
         right: 20px; /* PC版と同じ位置 */
-        gap: 15px; /* PC版と同じギャップ */
+        gap: 20px; /* タップしやすさのためギャップを広げる */
     }
 
     #scroll-nav a {
-        width: 10px; /* PC版と同じサイズ */
-        height: 10px; /* PC版と同じサイズ */
+        width: 15px; /* タップしやすさのためサイズを大きく */
+        height: 15px; /* タップしやすさのためサイズを大きく */
     }
 }
