@@ -555,6 +555,12 @@ h1 {
     flex-direction: column;
 }
 
+.card:nth-child(3) .card-content p {
+    margin: 0; /* デフォルトのマージンをリセット */
+    text-align: center; /* テキストを中央揃え */
+    width: 100%; /* 親要素の幅いっぱいに広げる */
+}
+
 #clock-container {
     font-family: 'Roboto Mono', monospace;
     text-align: center;
