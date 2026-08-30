@@ -731,14 +731,15 @@ h1 {
 
     .instagram-app-icon,
     .spotify-app-icon,
-    .discord-app-icon {
+    .discord-app-icon,
+    .jiffcy-app-icon { /* Jiffcyアイコンもモバイル向けに調整 */
         width: 35px; /* モバイル向けにサイズを調整 */
         height: 35px; /* モバイル向けにサイズを調整 */
         transform: none; /* デスクトップのtransformをリセット */
-        vertical-align: middle; /* 垂直方向の配置を保証 */
-        margin: 0; /* 余分なマージンをなくす */
     }
-    /* Jiffcy icon will now inherit PC styles */
+    .jiffcy-app-icon:hover {
+        transform: scale(1.1); /* モバイルでは拡大のみ */
+    }
 
     .default-button-link {
         padding: 14px 20px; /* PC版と同じパディング */
