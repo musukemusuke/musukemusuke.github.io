@@ -663,6 +663,12 @@
         profileNameElement.addEventListener('click', () => {
             currentNameIndex = (currentNameIndex + 1) % names.length;
             profileNameElement.textContent = names[currentNameIndex];
+
+            if (names[currentNameIndex] === 'dark') {
+                profileNameElement.style.color = 'lightgray'; // darkの時に文字を薄くする
+            } else {
+                profileNameElement.style.color = 'white'; // musukeの時に文字を元に戻す
+            }
         });
   </script>
 </body>
