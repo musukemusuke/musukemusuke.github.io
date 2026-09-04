@@ -14,7 +14,7 @@
                 <div class="profile-group">
                     <img src="./images/shishivibe_avatar.jpg" alt="User Avatar" class="user-avatar">
                     <div class="profile-info">
-                        <h1>musuke</h1>
+                        <h1 id="profile-name">musuke</h1>
                         <ul class="link-list">
                             <li>
                                 <a href="https://www.instagram.com/m036e7/" target="_blank" rel="noopener noreferrer">
@@ -653,6 +653,16 @@
             if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
                 e.preventDefault();
             }
+        });
+
+        // --- Name Switcher ---
+        const profileNameElement = document.getElementById('profile-name');
+        const names = ['musuke', 'dark'];
+        let currentNameIndex = 0;
+
+        profileNameElement.addEventListener('click', () => {
+            currentNameIndex = (currentNameIndex + 1) % names.length;
+            profileNameElement.textContent = names[currentNameIndex];
         });
   </script>
 </body>
