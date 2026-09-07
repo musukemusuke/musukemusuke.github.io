@@ -629,6 +629,12 @@ h1 {
         /* margin: 20px auto; */ /* 垂直中央揃えのため削除 */
     }
 
+    /* 2枚目のカードのコンテンツ（時計と音楽プレイヤー）をスマホで縦並びにする */
+    .card:nth-child(2) .card-content {
+        flex-direction: column;
+        gap: 20px; /* 時計と音楽プレイヤーの間のスペース */
+    }
+
     #album-art {
         width: 80px; /* PC版と同じサイズ */
         height: 80px; /* PC版と同じサイズ */
