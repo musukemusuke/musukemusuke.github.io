@@ -129,7 +129,8 @@ h1 {
 
 .instagram-app-icon,
 .spotify-app-icon,
-.discord-app-icon {
+.discord-app-icon,
+.x-app-icon {
     width: 40px; /* 明示的な幅 */
     height: 40px; /* 明示的な高さ */
     object-fit: contain; /* 画像が要素内に収まるように調整 */
@@ -151,9 +152,14 @@ h1 {
     fill: #FFFFFF; /* Discordのブランドカラーを白に変更 */
 }
 
+.x-app-icon {
+    fill: #FFFFFF; /* Xのブランドカラーを白に変更 */
+}
+
 .instagram-app-icon:hover,
 .spotify-app-icon:hover,
-.discord-app-icon:hover {
+.discord-app-icon:hover,
+.x-app-icon:hover {
     transform: scale(1.1); /* ホバー時に1.1倍に拡大 */
 }
 
