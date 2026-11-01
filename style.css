@@ -28,8 +28,8 @@ body::-webkit-scrollbar {
 
 .container {
     background-color: transparent; /* 完全に透明 */
-    backdrop-filter: none; /* ぼかしを削除 */
     -webkit-backdrop-filter: none; /* ぼかしを削除 */
+    backdrop-filter: none; /* ぼかしを削除 */
     padding: 30px;
     border-radius: 16px;
     box-shadow: none;
@@ -99,9 +99,7 @@ h1 {
     /* transition: transform 0.2s ease; */ /* ホバー時の変形のみ残す */
 }
 
-.link-list a:hover {
-    /* transform: translateY(-2px); */ /* ホバー時の変形のみ残す */
-}
+
 
 /* デフォルトのボタンリンクスタイル */
 .default-button-link {
@@ -575,14 +573,78 @@ h1 {
     left: calc(50% - 1px); /* Center horizontally for wider mark */
 }
 
+/* All tick-mark rotation classes */
+.tick-0 { --rotation: 0deg; }
+.tick-6 { --rotation: 6deg; }
+.tick-12 { --rotation: 12deg; }
+.tick-18 { --rotation: 18deg; }
+.tick-24 { --rotation: 24deg; }
+.tick-30 { --rotation: 30deg; }
+.tick-36 { --rotation: 36deg; }
+.tick-42 { --rotation: 42deg; }
+.tick-48 { --rotation: 48deg; }
+.tick-54 { --rotation: 54deg; }
+.tick-60 { --rotation: 60deg; }
+.tick-66 { --rotation: 66deg; }
+.tick-72 { --rotation: 72deg; }
+.tick-78 { --rotation: 78deg; }
+.tick-84 { --rotation: 84deg; }
+.tick-90 { --rotation: 90deg; }
+.tick-96 { --rotation: 96deg; }
+.tick-102 { --rotation: 102deg; }
+.tick-108 { --rotation: 108deg; }
+.tick-114 { --rotation: 114deg; }
+.tick-120 { --rotation: 120deg; }
+.tick-126 { --rotation: 126deg; }
+.tick-132 { --rotation: 132deg; }
+.tick-138 { --rotation: 138deg; }
+.tick-144 { --rotation: 144deg; }
+.tick-150 { --rotation: 150deg; }
+.tick-156 { --rotation: 156deg; }
+.tick-162 { --rotation: 162deg; }
+.tick-168 { --rotation: 168deg; }
+.tick-174 { --rotation: 174deg; }
+.tick-180 { --rotation: 180deg; }
+.tick-186 { --rotation: 186deg; }
+.tick-192 { --rotation: 192deg; }
+.tick-198 { --rotation: 198deg; }
+.tick-204 { --rotation: 204deg; }
+.tick-210 { --rotation: 210deg; }
+.tick-216 { --rotation: 216deg; }
+.tick-222 { --rotation: 222deg; }
+.tick-228 { --rotation: 228deg; }
+.tick-234 { --rotation: 234deg; }
+.tick-240 { --rotation: 240deg; }
+.tick-246 { --rotation: 246deg; }
+.tick-252 { --rotation: 252deg; }
+.tick-258 { --rotation: 258deg; }
+.tick-264 { --rotation: 264deg; }
+.tick-270 { --rotation: 270deg; }
+.tick-276 { --rotation: 276deg; }
+.tick-282 { --rotation: 282deg; }
+.tick-288 { --rotation: 288deg; }
+.tick-294 { --rotation: 294deg; }
+.tick-300 { --rotation: 300deg; }
+.tick-306 { --rotation: 306deg; }
+.tick-312 { --rotation: 312deg; }
+.tick-318 { --rotation: 318deg; }
+.tick-324 { --rotation: 324deg; }
+.tick-330 { --rotation: 330deg; }
+.tick-336 { --rotation: 336deg; }
+.tick-342 { --rotation: 342deg; }
+.tick-348 { --rotation: 348deg; }
+.tick-354 { --rotation: 354deg; }
+
 /* Major hour marks (12, 3, 6, 9 o'clock) */
-.tick-mark[style*="--rotation: 0deg;"],
-.tick-mark[style*="--rotation: 90deg;"],
-.tick-mark[style*="--rotation: 180deg;"],
-.tick-mark[style*="--rotation: 270deg;"] {
+.tick-0, .tick-90, .tick-180, .tick-270 {
     width: 3px; /* Thicker for major hour marks */
     height: 15px; /* Longer for major hour marks */
     left: calc(50% - 1.5px); /* Center horizontally for wider mark */
+}
+
+/* Hidden state for elements */
+.hidden {
+    display: none;
 }
 
 
