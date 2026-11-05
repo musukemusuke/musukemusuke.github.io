@@ -727,6 +727,90 @@ h1 {
         width: 28px; /* PC版と同じサイズ */
         height: 28px; /* PC版と同じサイズ */
     }
+}
+
+/* ローディング画面のスタイル */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+    pointer-events: auto; /* ローディング中は下の要素を操作不可に */
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* ローディング終了後は操作を許可 */
+}
+
+.loading-clock {
+    width: 120px;
+    height: 120px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    position: relative;
+    margin-bottom: 30px;
+    background-color: #000;
+}
+
+.loading-clock-hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.loading-clock .hour-hand {
+    width: 5px;
+    height: 35px;
+    margin-left: -2.5px;
+    animation: rotate-hour 12s linear infinite;
+}
+
+.loading-clock .minute-hand {
+    width: 3px;
+    height: 50px;
+    margin-left: -1.5px;
+    animation: rotate-minute 6s linear infinite;
+}
+
+.loading-clock-center {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loading-logo {
+    color: #fff;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+}
+
+@keyframes rotate-hour {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes rotate-minute {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
     /* Volume controls */
     #volume-container {

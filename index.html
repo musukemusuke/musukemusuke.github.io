@@ -8,6 +8,16 @@
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
+    <!-- ローディング画面 -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-clock">
+            <div class="loading-clock-hand hour-hand"></div>
+            <div class="loading-clock-hand minute-hand"></div>
+            <div class="loading-clock-center"></div>
+        </div>
+        <span class="loading-logo">𝐌</span>
+    </div>
+
     <div id="scroll-container">
         <section class="card">
             <div class="container">
@@ -354,10 +364,17 @@
         audioPlayer.volume = volumeSlider.value; // Set initial volume
         updatePlayPauseIcon(); // UIを初期状態に同期
 
-        // サイトアクセス時の自動再生
-        playMusic(); // これがサイトアクセス時の自動再生を担う
+        // 自動再生を無効化 - ユーザーの操作後に再生開始
 
-        // --- Volume Control ---
+    // ローディング画面を非表示にする
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.classList.add('hidden');
+        }, 800); // 最低でも0.8秒間表示してスムーズな遷移にする
+    });
+
+        // --- Volume Control --->
         let lastVolume = 0.6; // デフォルト音量を60%に設定
         audioPlayer.volume = 0.6; // 初期音量を60%に設定
 
