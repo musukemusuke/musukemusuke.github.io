@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
+    <video id="background-video" autoplay loop muted playsinline></video>
     <!-- ローディング画面 -->
     <div id="loading-screen" class="loading-screen">
         <div class="loading-clock">
@@ -136,8 +137,7 @@
                     <div class="player-header">
                         <img src="./images/album_art.png" alt="Album Art" id="album-art">
                         <div class="song-info">
-                            <span id="song-title">Cry For Me x Jackpot</span>
-                            <span id="song-artist">Ironmouse, GameboyJones, shirobeats & HalaCG</span>
+                            <a id="song-title" href="#">Cry For Me x Jackpot</a>
                         </div>
                     </div>
                     <div class="player-controls">
@@ -163,18 +163,11 @@
 
             </div>
       </section>
-        <section class="card">
-            <div class="card-content">
-
-                <p>いつも仲良くしてくれてありがとう</p>
-            </div>
-        </section>
     </div>
 
     <nav id="scroll-nav">
         <a href="#card-1" title="1つ目のカードへ移動"></a>
         <a href="#card-2" title="2つ目のカードへ移動"></a>
-        <a href="#card-3" title="3つ目のカードへ移動"></a>
     </nav>
 
 
@@ -208,7 +201,7 @@
         const nextBtn = document.getElementById('next-btn');
         const albumArt = document.getElementById('album-art');
         const songTitle = document.getElementById('song-title');
-        const songArtist = document.getElementById('song-artist');
+
         // プログレスバー関連のDOM要素を再宣言
         const progressContainer = document.getElementById('progress-container');
         const progressBar = document.getElementById('progress-bar');
@@ -227,18 +220,23 @@
         }
 
         // --- Playlist ---
+        const backgroundVideo = document.getElementById('background-video');
         const songs = [
             {
                 title: 'Cry For Me x Jackpot',
                 artist: 'Ironmouse, GameboyJones, shirobeats & HalaCG',
-                src: 'music/Cry For Me x Jackpot - Ironmouse.mp3',
-                cover: './images/album_art.png'
+                src: 'music/cryforme.m4a',
+                cover: './images/album_art.png',
+                url: 'https://www.youtube.com/watch?v=BFfRR171G7w', // 公式MVページ
+                video: './videos/cryforme_video.f625.mp4' // 背景動画のパス
             },
             {
                 title: 'Bad Apple!!',
                 artist: 'nomico',
-                src: 'music/badapple.mp3',
-                cover: './images/album_art (1).png'
+                src: 'music/badapple.m4a',
+                cover: './images/album_art (1).png',
+                url: 'https://www.youtube.com/watch?v=FtutLA63Cp8', // 公式影絵PV動画
+                video: './videos/badapple_video.f396.mp4' // 背景動画のパス
             }
         ];
 
@@ -259,7 +257,15 @@
             audioPlayer.src = song.src;
             albumArt.src = song.cover;
             songTitle.textContent = song.title;
-            songArtist.textContent = song.artist;
+            // hrefを現在の曲のURLに更新（クリックで外部リンクへ飛ぶように）
+            songTitle.href = song.url;
+            // 背景動画を現在の曲の動画に更新
+            if (song.video) {
+                backgroundVideo.src = song.video;
+                backgroundVideo.load();
+                // 曲切り替え時に動画の再生位置をリセットして同期を維持
+                backgroundVideo.currentTime = 0;
+            }
             audioPlayer.load(); // Load the new song
             progressFilled.style.width = '0%'; // プログレスバーを0%にリセット
             audioPlayer.onloadedmetadata = () => {
@@ -364,6 +370,15 @@
         audioPlayer.volume = volumeSlider.value; // Set initial volume
         updatePlayPauseIcon(); // UIを初期状態に同期
         audioPlayer.pause(); // 初期状態で必ず一時停止（自動再生を完全に無効化）
+        
+        // 曲名クリックでその曲の外部ページに移動するイベントを設定
+         document.getElementById('song-title').addEventListener('click', function(e) {
+             e.preventDefault(); // デフォルトのリンク動作をキャンセル
+             const currentSong = songs[currentSongIndex];
+             if (currentSong.url) {
+                 window.open(currentSong.url, '_blank'); // 新しいタブで開く
+             }
+         });
 
         // 自動再生を無効化 - ユーザーの操作後に再生開始
 
@@ -430,7 +445,21 @@
         setInitialVolumeState();
 
         // --- Music Player Play/Pause ---
-        playPauseBtn.addEventListener('click', togglePlayPause);
+        playPauseBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                // 音声と動画を同時に再生開始して同期を確保
+                Promise.all([audioPlayer.play(), backgroundVideo.play()]).then(() => {
+                    // 再生開始時に背景動画をフェードイン
+                    backgroundVideo.style.opacity = '0.5';
+                }).catch(e => console.log("再生エラー:", e));
+            } else {
+                audioPlayer.pause();
+                backgroundVideo.pause();
+                // 一時停止時に背景動画をフェードアウト
+                backgroundVideo.style.opacity = '0';
+            }
+            updatePlayPauseIcon();
+        });
 
         prevBtn.addEventListener('click', playPrevSong);
         nextBtn.addEventListener('click', playNextSong);
