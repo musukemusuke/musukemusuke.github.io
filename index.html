@@ -132,7 +132,7 @@
                     <div id="digital-time"></div> <!-- デジタル時刻表示用の新しい要素 -->
                 </div>
                 <div id="music-player-container">
-                    <audio id="audio-player" autoplay></audio>
+                    <audio id="audio-player"></audio>
                     <div class="player-header">
                         <img src="./images/album_art.png" alt="Album Art" id="album-art">
                         <div class="song-info">
@@ -363,6 +363,7 @@
         loadSong(currentSongIndex);
         audioPlayer.volume = volumeSlider.value; // Set initial volume
         updatePlayPauseIcon(); // UIを初期状態に同期
+        audioPlayer.pause(); // 初期状態で必ず一時停止（自動再生を完全に無効化）
 
         // 自動再生を無効化 - ユーザーの操作後に再生開始
 
