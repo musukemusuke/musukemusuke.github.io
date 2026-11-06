@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>𝐌</title>
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="style.css?v=1.1">
+</head>
+<body>
+    <video id="background-video" autoplay loop muted playsinline></video>
+    <button id="clock-toggle" title="時計の表示/非表示">
+        <svg id="clock-icon" class="clock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="32px" height="32px">
+            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+        </svg>
+    </button>
+    <!-- ローディング画面 -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-clock">
+            <div class="loading-clock-hand hour-hand"></div>
+            <div class="loading-clock-hand minute-hand"></div>
+            <div class="loading-clock-center"></div>
+        </div>
+        <span class="loading-logo">𝐌</span>
+    </div>
+
+    <div id="scroll-container">
+        <section class="card">
+            <div class="container">
+                <div class="profile-group">
+                    <img src="./images/Re_zero (Fanart).jpg" alt="User Avatar" class="user-avatar">
+                    <div class="profile-info">
+                        <h1>musuke</h1>
+                        <ul class="link-list">
+                            <li>
+                                <a href="https://x.com/ntsk_0x0" target="_blank" rel="noopener noreferrer" title="X（Twitter）プロフィールへのリンク">
+                                    <svg class="x-app-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17.382 3.092h3.074l-6.725 7.668 7.934 10.148h-6.179l-4.843-6.313-5.548 6.313H2.072l7.172-8.192L1.65 3.092h6.32l4.378 5.783 5.034-5.783zm-1.077 16.563h1.703L6.567 4.788h-1.83l11.568 14.867z"/>
+                                    </svg>
+                                </a>
+                            </li>
+
+
+                            <li>
+                                <a href="https://discord.com/users/772268153370968117" target="_blank" rel="noopener noreferrer" title="Discordプロフィールへのリンク">
+                                    <svg class="discord-app-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                                    </svg>
+                                </a>
+                            </li>
+                        </ul>
+
+                </div>
+            </div>
+        </section>
+        <section class="card">
+        <div class="card-content">
+                <div id="clock-container">
+                    <div id="analog-clock">
+                        <div class="hand hour"></div>
+                        <div class="hand minute"></div>
+                        <div class="hand second"></div>
+                        <div class="center-dot"></div>
+                        <div class="tick-mark hour-mark tick-0"></div>
+                        <div class="tick-mark minute-mark tick-6"></div>
+                        <div class="tick-mark minute-mark tick-12"></div>
+                        <div class="tick-mark minute-mark tick-18"></div>
+                        <div class="tick-mark minute-mark tick-24"></div>
+                        <div class="tick-mark hour-mark tick-30"></div>
+                        <div class="tick-mark minute-mark tick-36"></div>
+                        <div class="tick-mark minute-mark tick-42"></div>
+                        <div class="tick-mark minute-mark tick-48"></div>
+                        <div class="tick-mark minute-mark tick-54"></div>
+                        <div class="tick-mark hour-mark tick-60"></div>
+                        <div class="tick-mark minute-mark tick-66"></div>
+                        <div class="tick-mark minute-mark tick-72"></div>
+                        <div class="tick-mark minute-mark tick-78"></div>
+                        <div class="tick-mark minute-mark tick-84"></div>
+                        <div class="tick-mark hour-mark tick-90"></div>
+                        <div class="tick-mark minute-mark tick-96"></div>
+                        <div class="tick-mark minute-mark tick-102"></div>
+                        <div class="tick-mark minute-mark tick-108"></div>
+                        <div class="tick-mark minute-mark tick-114"></div>
+                        <div class="tick-mark hour-mark tick-120"></div>
+                        <div class="tick-mark minute-mark tick-126"></div>
+                        <div class="tick-mark minute-mark tick-132"></div>
+                        <div class="tick-mark minute-mark tick-138"></div>
+                        <div class="tick-mark minute-mark tick-144"></div>
+                        <div class="tick-mark hour-mark tick-150"></div>
+                        <div class="tick-mark minute-mark tick-156"></div>
+                        <div class="tick-mark minute-mark tick-162"></div>
+                        <div class="tick-mark minute-mark tick-168"></div>
+                        <div class="tick-mark minute-mark tick-174"></div>
+                        <div class="tick-mark hour-mark tick-180"></div>
+                        <div class="tick-mark minute-mark tick-186"></div>
+                        <div class="tick-mark minute-mark tick-192"></div>
+                        <div class="tick-mark minute-mark tick-198"></div>
+                        <div class="tick-mark minute-mark tick-204"></div>
+                        <div class="tick-mark hour-mark tick-210"></div>
+                        <div class="tick-mark minute-mark tick-216"></div>
+                        <div class="tick-mark minute-mark tick-222"></div>
+                        <div class="tick-mark minute-mark tick-228"></div>
+                        <div class="tick-mark minute-mark tick-234"></div>
+                        <div class="tick-mark hour-mark tick-240"></div>
+                        <div class="tick-mark minute-mark tick-246"></div>
+                        <div class="tick-mark minute-mark tick-252"></div>
+                        <div class="tick-mark minute-mark tick-258"></div>
+                        <div class="tick-mark minute-mark tick-264"></div>
+                        <div class="tick-mark hour-mark tick-270"></div>
+                        <div class="tick-mark minute-mark tick-276"></div>
+                        <div class="tick-mark minute-mark tick-282"></div>
+                        <div class="tick-mark minute-mark tick-288"></div>
+                        <div class="tick-mark minute-mark tick-294"></div>
+                        <div class="tick-mark hour-mark tick-300"></div>
+                        <div class="tick-mark minute-mark tick-306"></div>
+                        <div class="tick-mark minute-mark tick-312"></div>
+                        <div class="tick-mark minute-mark tick-318"></div>
+                        <div class="tick-mark minute-mark tick-324"></div>
+                        <div class="tick-mark hour-mark tick-330"></div>
+                        <div class="tick-mark minute-mark tick-336"></div>
+                        <div class="tick-mark minute-mark tick-342"></div>
+                        <div class="tick-mark minute-mark tick-348"></div>
+                        <div class="tick-mark minute-mark tick-354"></div>
+                        <div class="marker marker-1"></div>
+                        <div class="marker marker-2"></div>
+                        <div class="marker marker-3"></div>
+                        <div class="marker marker-4"></div>
+                        <div class="marker marker-5"></div>
+                        <div class="marker marker-6"></div>
+                        <div class="marker marker-7"></div>
+                        <div class="marker marker-8"></div>
+                        <div class="marker marker-9"></div>
+                        <div class="marker marker-10"></div>
+                        <div class="marker marker-11"></div>
+                        <div class="marker marker-12"></div>
+                    </div>
+                    <div id="date"></div>
+                    <div id="digital-time"></div> <!-- デジタル時刻表示用の新しい要素 -->
+                </div>
+                <div id="music-player-container">
+                    <audio id="audio-player"></audio>
+                    <div class="player-header">
+                        <img src="./images/album_art.png" alt="Album Art" id="album-art">
+                        <div class="song-info">
+                            <a id="song-title" href="#">Cry For Me x Jackpot</a>
+                        </div>
+                    </div>
+                    <div class="player-controls">
+                        <button id="prev-btn" class="player-btn" title="前の曲へ戻る">
+                            <svg class="player-icon" viewBox="0 0 24 24" fill="white"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg>
+                        </button>
+                        <button id="play-pause-btn" class="player-btn" title="再生/一時停止">
+                            <svg id="play-icon" class="player-icon" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"></path></svg>
+                            <svg id="pause-icon" class="player-icon hidden" viewBox="0 0 24 24" fill="white"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+                        </button>
+                        <button id="next-btn" class="player-btn" title="次の曲へ進む">
+                            <svg class="player-icon" viewBox="0 0 24 24" fill="white"><path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z"></path></svg>
+                        </button>
+                    </div>
+                    <div id="progress-container">
+                        <div id="progress-bar">
+                            <div id="progress-filled"></div>
+                        </div>
+                        <div id="time-display">0:00 / 0:00</div>
+                    </div>
+
+                </div>
+
+            </div>
+      </section>
+    </div>
+
+    <nav id="scroll-nav">
+        <a href="#card-1" title="1つ目のカードへ移動"></a>
+        <a href="#card-2" title="2つ目のカードへ移動"></a>
+    </nav>
+
+
+
+    <div id="volume-container">
+        <button id="mute-toggle" title="ミュート/ミュート解除">
+            <svg id="volume-on" class="volume-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            <svg id="volume-off" class="volume-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+        </button>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" class="volume-slider" title="音量調整スライダー" aria-label="音量調整">
+    </div>
+
+    <script>
+        // --- DOM Element Declarations ---
+        const audioPlayer = document.getElementById('audio-player');
+        const muteToggle = document.querySelector('#volume-container button');
+        const volumeOn = document.getElementById('volume-on');
+        const volumeOff = document.getElementById('volume-off');
+        const volumeSlider = document.querySelector('#volume-container input');
+        const container = document.querySelector('.container');
+        const avatar = document.querySelector('.user-avatar');
+        const title = document.querySelector('.profile-info h1');
+        const links = document.querySelector('.link-list');
+        const scrollContainer = document.getElementById('scroll-container');
+        const navLinks = document.querySelectorAll('#scroll-nav a');
+        const cards = Array.from(document.querySelectorAll('#scroll-container .card'));
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const albumArt = document.getElementById('album-art');
+        const songTitle = document.getElementById('song-title');
+
+        // プログレスバー関連のDOM要素を再宣言
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressFilled = document.getElementById('progress-filled');
+        const timeDisplay = document.getElementById('time-display');
+
+        let displayedTotalDuration = NaN; // 表示する合計再生時間を保持する新しい変数
+
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds < 0) {
+                return '--:--';
+            }
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // --- Playlist ---
+        const backgroundVideo = document.getElementById('background-video');
+        const songs = [
+            {
+                title: 'Cry For Me x Jackpot',
+                artist: 'Ironmouse, GameboyJones, shirobeats & HalaCG',
+                src: 'music/cryforme.m4a',
+                cover: './images/album_art.png',
+                url: 'https://www.youtube.com/watch?v=BFfRR171G7w', // 公式MVページ
+                video: './videos/cryforme_final.mp4' // 最終圧縮後の背景動画パス
+            },
+            {
+                title: 'Bad Apple!!',
+                artist: 'nomico',
+                src: 'music/badapple.m4a',
+                cover: './images/album_art (1).png',
+                url: 'https://www.youtube.com/watch?v=FtutLA63Cp8', // 公式影絵PV動画
+                video: './videos/badapple_video.f396.mp4' // 背景動画のパス
+            }
+        ];
+
+        let currentSongIndex = 0;
+
+        function updatePlayPauseIcon() {
+            if (audioPlayer.paused) {
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            } else {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            }
+        }
+
+        function loadSong(songIndex) {
+            const song = songs[songIndex];
+            audioPlayer.src = song.src;
+            albumArt.src = song.cover;
+            songTitle.textContent = song.title;
+            // hrefを現在の曲のURLに更新（クリックで外部リンクへ飛ぶように）
+            songTitle.href = song.url;
+            // 背景動画を現在の曲の動画に更新
+            if (song.video) {
+                backgroundVideo.src = song.video;
+                backgroundVideo.load();
+                // 曲切り替え時に動画の再生位置をリセットして同期を維持（メタデータロード後にも確実に実行）
+                backgroundVideo.onloadedmetadata = () => {
+                    backgroundVideo.currentTime = 0;
+                };
+                backgroundVideo.currentTime = 0;
+            }
+            audioPlayer.load(); // Load the new song
+            progressFilled.style.width = '0%'; // プログレスバーを0%にリセット
+            audioPlayer.onloadedmetadata = () => {
+                if (!isNaN(audioPlayer.duration) && audioPlayer.duration > 0) {
+                    displayedTotalDuration = audioPlayer.duration; // 初めてdurationが取得できたときに設定
+                    timeDisplay.textContent = `0:00 / ${formatTime(displayedTotalDuration)}`;
+                } else {
+                    displayedTotalDuration = NaN; // durationが不正な場合はリセット
+                    timeDisplay.textContent = `0:00 / --:--`;
+                }
+            };
+        }
+
+        function playMusic() {
+            const playPromise = audioPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    updatePlayPauseIcon(); // 再生成功後にUIを更新
+                }).catch(error => {
+                    console.error("再生がブロックされました:", error);
+                    audioPlayer.pause(); // ブロックされた場合は確実に一時停止状態にする
+                    updatePlayPauseIcon(); // UIを一時停止状態に更新
+                });
+            } else {
+                // Promiseを返さない古いブラウザ向けのフォールバック（現代のブラウザでは稀）
+                updatePlayPauseIcon();
+            }
+        }
+
+        function pauseMusic() {
+            audioPlayer.pause();
+            updatePlayPauseIcon(); // UIを一時停止状態に更新
+        }
+
+        function togglePlayPause() {
+            if (audioPlayer.paused) { // audioPlayer.pausedを直接チェック
+                playMusic();
+            } else {
+                pauseMusic();
+            }
+        }
+
+        audioPlayer.addEventListener('timeupdate', () => {
+            const currentTime = audioPlayer.currentTime;
+            const duration = audioPlayer.duration; // 現在のdurationはプログレスバーの計算に使う
+
+            // 再生中は常に音声の再生位置に動画の再生位置を同期させる（0.1秒以上のズレがある場合に修正）
+            if (!backgroundVideo.paused && Math.abs(backgroundVideo.currentTime - currentTime) > 0.1) {
+                backgroundVideo.currentTime = currentTime;
+            }
+
+            // console.log(`Time update: currentTime=${currentTime}, duration=${duration}`);
+            if (!isNaN(duration) && duration > 0) {
+                const progressPercent = (currentTime / duration) * 100;
+                progressFilled.style.width = `${progressPercent}%`;
+                // 表示する合計再生時間にはdisplayedTotalDurationを使用
+                timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(displayedTotalDuration)}`;
+            } else {
+                timeDisplay.textContent = `${formatTime(currentTime)} / --:--`;
+                progressFilled.style.width = `0%`;
+            }
+        });
+
+        audioPlayer.addEventListener('durationchange', () => {
+            const duration = audioPlayer.duration;
+            // timeDisplay.textContent の更新は timeupdate イベントに任せる
+        });
+
+        progressBar.addEventListener('click', (e) => {
+            const progressBarWidth = progressBar.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audioPlayer.duration;
+            if (!isNaN(duration)) {
+                const newTime = (clickX / progressBarWidth) * duration;
+                audioPlayer.currentTime = newTime;
+                // プログレスバークリックで再生位置を変更した際も動画の再生位置を同期
+                if (!backgroundVideo.paused) {
+                    backgroundVideo.currentTime = newTime;
+                }
+            }
+        });
+
+        function playNextSong() {
+            const wasPlayingBefore = !audioPlayer.paused; // 曲を切り替える前の再生状態を記憶
+            audioPlayer.pause(); // 新しい曲をロードする前に一時停止を保証
+            backgroundVideo.pause();
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            loadSong(currentSongIndex);
+            if (wasPlayingBefore) {
+                // 曲切り替え後も音声と動画を同時に再生して同期を維持
+                Promise.all([audioPlayer.play(), backgroundVideo.play()]).catch(e => console.log("再生エラー:", e));
+            } else {
+                audioPlayer.pause();
+                backgroundVideo.pause();
+                updatePlayPauseIcon(); // UIを停止状態に更新
+            }
+        }
+
+        function playPrevSong() {
+            const wasPlayingBefore = !audioPlayer.paused; // 曲を切り替える前の再生状態を記憶
+            audioPlayer.pause(); // 新しい曲をロードする前に一時停止を保証
+            backgroundVideo.pause();
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            loadSong(currentSongIndex);
+            if (wasPlayingBefore) {
+                // 曲切り替え後も音声と動画を同時に再生して同期を維持
+                Promise.all([audioPlayer.play(), backgroundVideo.play()]).catch(e => console.log("再生エラー:", e));
+            } else {
+                audioPlayer.pause();
+                backgroundVideo.pause();
+                updatePlayPauseIcon(); // UIを停止状態に更新
+            }
+        }
+
+        audioPlayer.addEventListener('ended', playNextSong);
+
+        // Initial load
+        loadSong(currentSongIndex);
+        audioPlayer.volume = volumeSlider.value; // Set initial volume
+        updatePlayPauseIcon(); // UIを初期状態に同期
+        audioPlayer.pause(); // 初期状態で必ず一時停止（自動再生を完全に無効化）
+        
+        // 曲名クリックでその曲の外部ページに移動するイベントを設定
+         document.getElementById('song-title').addEventListener('click', function(e) {
+             e.preventDefault(); // デフォルトのリンク動作をキャンセル
+             const currentSong = songs[currentSongIndex];
+             if (currentSong.url) {
+                 window.open(currentSong.url, '_blank'); // 新しいタブで開く
+             }
+         });
+
+        // 自動再生を無効化 - ユーザーの操作後に再生開始
+
+    // ローディング画面を非表示にする
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.classList.add('hidden');
+        }, 800); // 最低でも0.8秒間表示してスムーズな遷移にする
+    });
+
+        // --- Volume Control --->
+        let lastVolume = 0.6; // デフォルト音量を60%に設定
+        audioPlayer.volume = 0.6; // 初期音量を60%に設定
+
+        function updateVolumeIcon() {
+            if (audioPlayer.muted || audioPlayer.volume === 0) {
+                volumeOn.classList.add('hidden');
+                volumeOff.classList.remove('hidden');
+            } else {
+                volumeOn.classList.remove('hidden');
+                volumeOff.classList.add('hidden');
+            }
+        }
+
+        muteToggle.addEventListener('click', () => {
+            if (audioPlayer.muted) {
+                audioPlayer.muted = false;
+                if (audioPlayer.volume === 0) {
+                    audioPlayer.volume = lastVolume;
+                }
+            } else {
+                if (audioPlayer.volume > 0) {
+                    lastVolume = audioPlayer.volume;
+                }
+                audioPlayer.muted = true;
+            }
+            const newSliderValue = audioPlayer.muted ? 0 : audioPlayer.volume;
+            volumeSlider.value = newSliderValue;
+            const percent = newSliderValue * 100;
+            volumeSlider.style.setProperty('--value-percent', `${percent}%`);
+            updateVolumeIcon();
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+            const newVolume = parseFloat(e.target.value);
+            audioPlayer.volume = newVolume;
+            audioPlayer.muted = newVolume === 0;
+            const percent = newVolume * 100;
+            e.target.style.setProperty('--value-percent', `${percent}%`);
+            if (newVolume > 0) {
+                lastVolume = newVolume;
+            }
+            updateVolumeIcon();
+        });
+
+        function setInitialVolumeState() {
+            const initialSliderValue = audioPlayer.muted ? 0 : audioPlayer.volume;
+            const initialPercent = initialSliderValue * 100;
+            volumeSlider.value = initialSliderValue;
+            volumeSlider.style.setProperty('--value-percent', `${initialPercent}%`);
+            updateVolumeIcon();
+        }
+        setInitialVolumeState();
+
+        // --- Music Player Play/Pause ---
+        playPauseBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                // 音声と動画を同時に再生開始して同期を確保
+                Promise.all([audioPlayer.play(), backgroundVideo.play()]).then(() => {
+                    // 再生開始時に背景動画をフェードイン
+                    backgroundVideo.style.opacity = '0.5';
+                }).catch(e => console.log("再生エラー:", e));
+            } else {
+                audioPlayer.pause();
+                backgroundVideo.pause();
+                // 一時停止時に背景動画をフェードアウト
+                backgroundVideo.style.opacity = '0';
+            }
+            updatePlayPauseIcon();
+        });
+
+        prevBtn.addEventListener('click', playPrevSong);
+        nextBtn.addEventListener('click', playNextSong);
+
+
+        // --- Progress Bar and Time Display ---
+
+
+
+
+
+
+
+
+
+
+        // Initialize time display
+        if (!isNaN(audioPlayer.duration)) {
+            timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
+        }
+
+        // --- 3D Tilt Effect ---
+        function applyTilt(e) {
+            const event = e.touches ? e.touches[0] : e;
+            const { clientX, clientY } = event;
+            const { innerWidth, innerHeight } = window;
+            const x = (clientX / innerWidth - 0.5) * 2;
+            const y = (clientY / innerHeight - 0.5) * 2;
+            const rotateX = y * -15;
+            const rotateY = x * 15;
+            container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            avatar.style.transform = `translateZ(50px)`;
+            title.style.transform = `translateZ(30px)`;
+            links.style.transform = `translateZ(20px)`;
+        }
+
+        function resetTilt() {
+            container.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+            avatar.style.transform = 'translateZ(0px)';
+            title.style.transform = 'translateZ(0px)';
+            links.style.transform = 'translateZ(0px)';
+        }
+
+        document.addEventListener('mousemove', applyTilt);
+        document.addEventListener('mouseleave', resetTilt);
+        container.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            applyTilt(e);
+        }, { passive: false });
+        document.addEventListener('touchend', resetTilt);
+
+        // --- Scroll Control ---
+        let currentCardIndex = 0;
+        let isScrolling = false;
+        const scrollDuration = 1000;
+
+        function smoothScrollTo(targetY) {
+            const startY = scrollContainer.scrollTop;
+            const distance = targetY - startY;
+            let startTime = null;
+
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const run = ease(timeElapsed, startY, distance, scrollDuration);
+                scrollContainer.scrollTop = run;
+                if (timeElapsed < scrollDuration) requestAnimationFrame(animation);
+            }
+
+            function ease(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+
+            requestAnimationFrame(animation);
+        }
+
+        function scrollToCard(index) {
+            if (isScrolling || index < 0 || index >= cards.length) return;
+            isScrolling = true;
+            currentCardIndex = index;
+            const targetY = cards[index].offsetTop;
+            smoothScrollTo(targetY);
+            navLinks.forEach((link, i) => {
+                link.classList.toggle('active', i === index);
+            });
+            // URLのハッシュを更新して、現在のカードと同期させる
+            history.pushState(null, '', `#card-${index + 1}`);
+            // 現在のカードインデックスをlocalStorageに保存
+            localStorage.setItem('lastViewedCardIndex', index);
+            setTimeout(() => {
+                isScrolling = false;
+            }, scrollDuration);
+        }
+
+        scrollContainer.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            if (isScrolling) return;
+            if (e.deltaY > 0) {
+                scrollToCard(currentCardIndex + 1);
+            } else {
+                scrollToCard(currentCardIndex - 1);
+            }
+        }, { passive: false });
+
+        // --- Swipe Controls for Mobile ---
+        let touchStartY = 0;
+        scrollContainer.addEventListener('touchstart', function(e) {
+            if (isScrolling) return;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        scrollContainer.addEventListener('touchmove', function(e) {
+            // Prevent the browser's default vertical scroll to avoid conflicts
+            e.preventDefault();
+        }, { passive: false });
+
+        scrollContainer.addEventListener('touchend', function(e) {
+            if (isScrolling) return;
+            const touchEndY = e.changedTouches[0].clientY;
+            const swipeDistance = touchStartY - touchEndY;
+            const swipeThreshold = 50; // Minimum distance for a swipe
+
+            if (swipeDistance > swipeThreshold) {
+                // Swiped Up
+                scrollToCard(currentCardIndex + 1);
+            } else if (swipeDistance < -swipeThreshold) {
+                // Swiped Down
+                scrollToCard(currentCardIndex - 1);
+            }
+        });
+
+
+        navLinks.forEach((link, index) => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                scrollToCard(index);
+            });
+        });
+        // ページ読み込み時に初期化関数を呼び出す
+        function initializeActiveCard() {
+            let initialIndex = 0; // 常にcard-1 (インデックス0) に初期化
+
+            console.log('initializeActiveCard: initialIndex determined:', initialIndex); // Debug log
+            // Log offsetTop for all cards to verify
+            cards.forEach((card, idx) => {
+                console.log(`Card ${idx} offsetTop:`, card.offsetTop);
+            });
+
+            // 一時的にscroll-snap-typeを無効にする
+            const originalScrollSnapType = scrollContainer.style.scrollSnapType;
+            scrollContainer.style.scrollSnapType = 'none';
+
+            // アニメーションなしで直接スクロール位置を設定
+            console.log('initializeActiveCard: Target card offsetTop at scroll set:', cards[initialIndex].offsetTop);
+            scrollContainer.scrollTop = cards[initialIndex].offsetTop;
+            console.log('initializeActiveCard: scrollContainer.scrollTop set to:', scrollContainer.scrollTop); // Debug log
+
+            // ナビゲーションドットのアクティブ状態を更新
+            navLinks.forEach((link, idx) => {
+                // 一時的にトランジションを無効にする
+                link.style.transition = 'none';
+                if (idx === initialIndex) {
+                    link.classList.add('active');
+                    console.log('initializeActiveCard: Setting active class for link index:', idx); // Debug log
+                } else {
+                    link.classList.remove('active');
+                }
+                // 短い遅延の後でトランジションを元に戻す
+                setTimeout(() => {
+                    link.style.transition = ''; // CSSで定義されたトランジションに戻す
+                }, 50); // わずかな遅延
+            });
+            currentCardIndex = initialIndex; // 現在のカードインデックスをグローバル変数に設定
+            console.log('initializeActiveCard: currentCardIndex set to:', currentCardIndex); // Debug log
+
+            // URLのハッシュを更新して、常にcard-1と同期させる
+            history.replaceState(null, '', `#card-${initialIndex + 1}`);
+
+            // 短い遅延の後でscroll-snap-typeを元に戻す
+            setTimeout(() => {
+                scrollContainer.style.scrollSnapType = originalScrollSnapType;
+            }, 100); // スクロールが落ち着くのを待つための短い遅延
+            scrollContainer.style.overflowY = 'scroll';
+            scrollContainer.style.visibility = 'visible';
+        }
+        initializeActiveCard();
+
+
+
+
+
+        // --- Clock ---
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            // デジタル時刻表示 (24時間形式)
+            const digitalHours = String(hours).padStart(2, '0');
+            const digitalMinutes = String(minutes).padStart(2, '0');
+            const digitalSeconds = String(seconds).padStart(2, '0');
+            document.getElementById('digital-time').textContent = `${digitalHours}:${digitalMinutes}:${digitalSeconds}`;
+
+            // アナログ時計の針
+            const hourHand = document.querySelector('.hour');
+            const minuteHand = document.querySelector('.minute');
+            const secondHand = document.querySelector('.second');
+
+            // 各針の回転角度を計算
+            const hourDeg = ((hours % 12) * 30) + (minutes * 0.5);
+            const minuteDeg = (minutes * 6) + (seconds * 0.1);
+            const secondDeg = seconds * 6;
+
+            if (hourHand) hourHand.style.transform = `rotate(${hourDeg}deg)`;
+            if (minuteHand) minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+            if (secondHand) secondHand.style.transform = `rotate(${secondDeg}deg)`;
+
+            // 日付表示 (日本語形式)
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').textContent = now.toLocaleDateString('ja-JP', dateOptions); // 日本語に設定
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); // 初回呼び出し
+
+        // 時計マーククリックで時計コンテナの表示/非表示をトグル
+        const clockToggle = document.getElementById('clock-toggle');
+        const clockContainer = document.getElementById('clock-container');
+        clockToggle.addEventListener('click', () => {
+            clockContainer.classList.toggle('visible');
+        });
+
+        window.addEventListener('keydown', function(e) {
+            if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+
+  </script>
+</body>
+</html>
