@@ -464,6 +464,36 @@ h1 {
     text-align: center;
     color: #ffffff;
     padding: 20px 40px;
+    opacity: 0; /* 初期状態で非表示 */
+    pointer-events: none; /* 非表示時はクリックを無効化 */
+    transition: opacity 0.3s ease; /* フェードイン/アウトのアニメーション */
+}
+
+#clock-container.visible {
+    opacity: 1; /* 表示状態 */
+    pointer-events: auto; /* クリックを有効化 */
+}
+
+#clock-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100; /* 他の要素の上に表示 */
+    transition: background-color 0.3s ease;
+}
+
+#clock-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.clock-icon {
+    display: block;
 }
 
 #progress-container {
@@ -651,6 +681,57 @@ h1 {
 }
 
 
+
+/* 時計表示コンテナ */
+#clock-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    color: #ffffff;
+    padding: 20px 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 99;
+}
+
+#clock-container.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#digital-time {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+#date {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* 時計トグルボタン */
+#clock-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    transition: background-color 0.3s ease;
+}
+
+#clock-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
 
 /* Mobile adjustments */
 @media (max-width: 768px) {

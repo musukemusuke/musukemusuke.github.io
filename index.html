@@ -9,6 +9,11 @@
 </head>
 <body>
     <video id="background-video" autoplay loop muted playsinline></video>
+    <button id="clock-toggle" title="時計の表示/非表示">
+        <svg id="clock-icon" class="clock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="32px" height="32px">
+            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+        </svg>
+    </button>
     <!-- ローディング画面 -->
     <div id="loading-screen" class="loading-screen">
         <div class="loading-clock">
@@ -228,7 +233,7 @@
                 src: 'music/cryforme.m4a',
                 cover: './images/album_art.png',
                 url: 'https://www.youtube.com/watch?v=BFfRR171G7w', // 公式MVページ
-                video: './videos/cryforme_video.f625.mp4' // 背景動画のパス
+                video: './videos/cryforme_final.mp4' // 最終圧縮後の背景動画パス
             },
             {
                 title: 'Bad Apple!!',
@@ -263,7 +268,10 @@
             if (song.video) {
                 backgroundVideo.src = song.video;
                 backgroundVideo.load();
-                // 曲切り替え時に動画の再生位置をリセットして同期を維持
+                // 曲切り替え時に動画の再生位置をリセットして同期を維持（メタデータロード後にも確実に実行）
+                backgroundVideo.onloadedmetadata = () => {
+                    backgroundVideo.currentTime = 0;
+                };
                 backgroundVideo.currentTime = 0;
             }
             audioPlayer.load(); // Load the new song
@@ -312,6 +320,11 @@
             const currentTime = audioPlayer.currentTime;
             const duration = audioPlayer.duration; // 現在のdurationはプログレスバーの計算に使う
 
+            // 再生中は常に音声の再生位置に動画の再生位置を同期させる（0.1秒以上のズレがある場合に修正）
+            if (!backgroundVideo.paused && Math.abs(backgroundVideo.currentTime - currentTime) > 0.1) {
+                backgroundVideo.currentTime = currentTime;
+            }
+
             // console.log(`Time update: currentTime=${currentTime}, duration=${duration}`);
             if (!isNaN(duration) && duration > 0) {
                 const progressPercent = (currentTime / duration) * 100;
@@ -336,30 +349,42 @@
             if (!isNaN(duration)) {
                 const newTime = (clickX / progressBarWidth) * duration;
                 audioPlayer.currentTime = newTime;
+                // プログレスバークリックで再生位置を変更した際も動画の再生位置を同期
+                if (!backgroundVideo.paused) {
+                    backgroundVideo.currentTime = newTime;
+                }
             }
         });
 
         function playNextSong() {
             const wasPlayingBefore = !audioPlayer.paused; // 曲を切り替える前の再生状態を記憶
             audioPlayer.pause(); // 新しい曲をロードする前に一時停止を保証
+            backgroundVideo.pause();
             currentSongIndex = (currentSongIndex + 1) % songs.length;
             loadSong(currentSongIndex);
             if (wasPlayingBefore) {
-                playMusic();
+                // 曲切り替え後も音声と動画を同時に再生して同期を維持
+                Promise.all([audioPlayer.play(), backgroundVideo.play()]).catch(e => console.log("再生エラー:", e));
             } else {
-                pauseMusic(); // UIを停止状態に更新
+                audioPlayer.pause();
+                backgroundVideo.pause();
+                updatePlayPauseIcon(); // UIを停止状態に更新
             }
         }
 
         function playPrevSong() {
             const wasPlayingBefore = !audioPlayer.paused; // 曲を切り替える前の再生状態を記憶
             audioPlayer.pause(); // 新しい曲をロードする前に一時停止を保証
+            backgroundVideo.pause();
             currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
             loadSong(currentSongIndex);
             if (wasPlayingBefore) {
-                playMusic();
+                // 曲切り替え後も音声と動画を同時に再生して同期を維持
+                Promise.all([audioPlayer.play(), backgroundVideo.play()]).catch(e => console.log("再生エラー:", e));
             } else {
-                pauseMusic(); // UIを停止状態に更新
+                audioPlayer.pause();
+                backgroundVideo.pause();
+                updatePlayPauseIcon(); // UIを停止状態に更新
             }
         }
 
@@ -687,6 +712,13 @@
         }
         setInterval(updateClock, 1000);
         updateClock(); // 初回呼び出し
+
+        // 時計マーククリックで時計コンテナの表示/非表示をトグル
+        const clockToggle = document.getElementById('clock-toggle');
+        const clockContainer = document.getElementById('clock-container');
+        clockToggle.addEventListener('click', () => {
+            clockContainer.classList.toggle('visible');
+        });
 
         window.addEventListener('keydown', function(e) {
             if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
