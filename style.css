@@ -483,13 +483,13 @@ h1 {
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: transparent;
     z-index: 100; /* 他の要素の上に表示 */
     transition: background-color 0.3s ease;
 }
 
 #clock-toggle:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: transparent;
 }
 
 .clock-icon {
@@ -724,13 +724,13 @@ h1 {
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: transparent;
     z-index: 100;
     transition: background-color 0.3s ease;
 }
 
 #clock-toggle:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: transparent;
 }
 
 /* Mobile adjustments */
