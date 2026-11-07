@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
-    <video id="background-video" autoplay loop muted playsinline></video>
+    <video id="background-video" autoplay loop muted playsinline preload="metadata"></video>
     <button id="clock-toggle" title="時計の表示/非表示">
         <svg id="clock-icon" class="clock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="32px" height="32px">
             <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
@@ -497,6 +497,26 @@
         prevBtn.addEventListener('click', playPrevSong);
         nextBtn.addEventListener('click', playNextSong);
 
+        // --- ページの可視性変更時の処理（別タブに移動して戻った時のカクつき対策）---
+        document.addEventListener('visibilitychange', () => {
+            // ページが再び表示された時
+            if (document.visibilityState === 'visible') {
+                // 再生中だった場合、再生を再開して位置を同期
+                if (!audioPlayer.paused) {
+                    // 動画が停止していたら再生を再開
+                    if (backgroundVideo.paused) {
+                        // 音声と動画の位置を再同期してから再生
+                        const currentAudioTime = audioPlayer.currentTime;
+                        if (Math.abs(backgroundVideo.currentTime - currentAudioTime) > 0.5) {
+                            backgroundVideo.currentTime = currentAudioTime;
+                        }
+                        backgroundVideo.play().catch(e => console.log("可視性復帰時の再生エラー:", e));
+                    }
+                }
+            } else {
+                // ページが非表示になった時は特に処理せず、ブラウザの制御に任せる
+            }
+        });
 
         // --- Progress Bar and Time Display ---
 
