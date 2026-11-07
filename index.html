@@ -258,13 +258,22 @@
             songTitle.href = song.url;
             // 背景動画を現在の曲の動画に更新
             if (song.video) {
-                backgroundVideo.src = song.video;
-                backgroundVideo.load();
-                // 曲切り替え時に動画の再生位置をリセットして同期を維持（メタデータロード後にも確実に実行）
-                backgroundVideo.onloadedmetadata = () => {
-                    backgroundVideo.currentTime = 0;
-                };
+                // 古いイベントリスナーをクリア
+                backgroundVideo.onloadedmetadata = null;
+                // キャッシュを回避するためにクエリパラメータを追加（タイムスタンプは一意にする）
+                backgroundVideo.src = song.video + '?t=' + Date.now();
+                // 再生位置を即座にリセット
                 backgroundVideo.currentTime = 0;
+                // load()を呼び出す前にイベントリスナーを設定
+                backgroundVideo.onloadedmetadata = () => {
+                    // メタデータロード後に確実に0秒から再生開始
+                    backgroundVideo.currentTime = 0;
+                    // 動画の再生を再開
+                    if (!backgroundVideo.paused) {
+                        backgroundVideo.play();
+                    }
+                };
+                backgroundVideo.load();
             }
             audioPlayer.load(); // Load the new song
             progressFilled.style.width = '0%'; // プログレスバーを0%にリセット
@@ -464,6 +473,13 @@
         // --- Music Player Play/Pause ---
         playPauseBtn.addEventListener('click', () => {
             if (audioPlayer.paused) {
+                // 再生開始前に音声と動画の再生位置を0秒にリセット
+                if (audioPlayer.currentTime > 0.1) {
+                    audioPlayer.currentTime = 0;
+                }
+                if (backgroundVideo.currentTime > 0.1) {
+                    backgroundVideo.currentTime = 0;
+                }
                 // 音声と動画を同時に再生開始して同期を確保
                 Promise.all([audioPlayer.play(), backgroundVideo.play()]).then(() => {
                     // 再生開始時に背景動画をフェードイン
