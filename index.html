@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
-    <video id="background-video" autoplay loop muted playsinline preload="metadata"></video>
+    <video id="background-video" autoplay loop muted playsinline></video>
     <button id="clock-toggle" title="時計の表示/非表示">
         <svg id="clock-icon" class="clock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="32px" height="32px">
             <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
@@ -233,7 +233,7 @@
                 src: 'music/badapple.m4a',
                 cover: './images/album_art (1).png',
                 url: 'https://www.youtube.com/watch?v=FtutLA63Cp8', // 公式影絵PV動画
-                video: './videos/badapple_60fps.mp4' // 60fps版背景動画のパス
+                video: './videos/badapple_60fps_h264.mp4' // H.264 60fps版背景動画のパス（ブラウザ再生負荷軽減）
             }
         ];
 
@@ -258,22 +258,13 @@
             songTitle.href = song.url;
             // 背景動画を現在の曲の動画に更新
             if (song.video) {
-                // 古いイベントリスナーをクリア
-                backgroundVideo.onloadedmetadata = null;
-                // キャッシュを回避するためにクエリパラメータを追加（タイムスタンプは一意にする）
-                backgroundVideo.src = song.video + '?t=' + Date.now();
-                // 再生位置を即座にリセット
-                backgroundVideo.currentTime = 0;
-                // load()を呼び出す前にイベントリスナーを設定
-                backgroundVideo.onloadedmetadata = () => {
-                    // メタデータロード後に確実に0秒から再生開始
-                    backgroundVideo.currentTime = 0;
-                    // 動画の再生を再開
-                    if (!backgroundVideo.paused) {
-                        backgroundVideo.play();
-                    }
-                };
+                backgroundVideo.src = song.video;
                 backgroundVideo.load();
+                // 曲切り替え時に動画の再生位置をリセットして同期を維持（メタデータロード後にも確実に実行）
+                backgroundVideo.onloadedmetadata = () => {
+                    backgroundVideo.currentTime = 0;
+                };
+                backgroundVideo.currentTime = 0;
             }
             audioPlayer.load(); // Load the new song
             progressFilled.style.width = '0%'; // プログレスバーを0%にリセット
@@ -473,13 +464,6 @@
         // --- Music Player Play/Pause ---
         playPauseBtn.addEventListener('click', () => {
             if (audioPlayer.paused) {
-                // 再生開始前に音声と動画の再生位置を0秒にリセット
-                if (audioPlayer.currentTime > 0.1) {
-                    audioPlayer.currentTime = 0;
-                }
-                if (backgroundVideo.currentTime > 0.1) {
-                    backgroundVideo.currentTime = 0;
-                }
                 // 音声と動画を同時に再生開始して同期を確保
                 Promise.all([audioPlayer.play(), backgroundVideo.play()]).then(() => {
                     // 再生開始時に背景動画をフェードイン
