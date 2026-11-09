@@ -260,10 +260,6 @@
             if (song.video) {
                 backgroundVideo.src = song.video;
                 backgroundVideo.load();
-                // 曲切り替え時に動画の再生位置をリセットして同期を維持（メタデータロード後にも確実に実行）
-                backgroundVideo.onloadedmetadata = () => {
-                    backgroundVideo.currentTime = 0;
-                };
                 backgroundVideo.currentTime = 0;
             }
             audioPlayer.load(); // Load the new song
@@ -316,8 +312,8 @@
             const currentTime = audioPlayer.currentTime;
             const duration = audioPlayer.duration; // 現在のdurationはプログレスバーの計算に使う
 
-            // 再生中は常に音声の再生位置に動画の再生位置を同期させる（0.1秒以上のズレがある場合に修正）
-            if (!backgroundVideo.paused && Math.abs(backgroundVideo.currentTime - currentTime) > 0.1) {
+            // 再生中は常に音声の再生位置に動画の再生位置を同期させる（0.5秒以上の大きなズレがある場合のみ修正）
+            if (!backgroundVideo.paused && Math.abs(backgroundVideo.currentTime - currentTime) > 0.5) {
                 backgroundVideo.currentTime = currentTime;
             }
 
