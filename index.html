@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
-    <video id="background-video" autoplay loop muted playsinline></video>
+    <video id="background-video" autoplay loop muted playsinline preload="auto"></video>
     <button id="clock-toggle" title="時計の表示/非表示">
         <svg id="clock-icon" class="clock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="32px" height="32px">
             <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
@@ -280,23 +280,27 @@
         }
 
         function playMusic() {
-            const playPromise = audioPlayer.play();
+            // 再生開始前に必ず動画の再生位置を0秒にリセットしてから再生
+            backgroundVideo.currentTime = 0;
+            const playPromise = Promise.all([audioPlayer.play(), backgroundVideo.play()]);
             if (playPromise !== undefined) {
                 playPromise.then(() => {
                     updatePlayPauseIcon(); // 再生成功後にUIを更新
                 }).catch(error => {
                     console.error("再生がブロックされました:", error);
-                    audioPlayer.pause(); // ブロックされた場合は確実に一時停止状態にする
+                    audioPlayer.pause();
+                    backgroundVideo.pause(); // ブロックされた場合は動画も一時停止
                     updatePlayPauseIcon(); // UIを一時停止状態に更新
                 });
             } else {
-                // Promiseを返さない古いブラウザ向けのフォールバック（現代のブラウザでは稀）
+                // Promiseを返さない古いブラウザ向けのフォールバック
                 updatePlayPauseIcon();
             }
         }
 
         function pauseMusic() {
             audioPlayer.pause();
+            backgroundVideo.pause(); // 音声を一時停止したら動画も一時停止
             updatePlayPauseIcon(); // UIを一時停止状態に更新
         }
 
@@ -381,6 +385,16 @@
         }
 
         audioPlayer.addEventListener('ended', playNextSong);
+
+        // タブの表示状態が変わった時に音声と動画の同期を再確認（別サイトから戻ってきた時のカクつき対策）
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && !audioPlayer.paused) {
+                // ページが表示され、かつ再生中の場合は再生位置を再同期
+                if (Math.abs(backgroundVideo.currentTime - audioPlayer.currentTime) > 0.1) {
+                    backgroundVideo.currentTime = audioPlayer.currentTime;
+                }
+            }
+        });
 
         // Initial load
         loadSong(currentSongIndex);
