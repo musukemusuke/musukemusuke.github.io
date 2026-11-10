@@ -213,8 +213,6 @@
         const progressFilled = document.getElementById('progress-filled');
         const timeDisplay = document.getElementById('time-display');
 
-        let displayedTotalDuration = NaN; // 表示する合計再生時間を保持する新しい変数
-
         function formatTime(seconds) {
             if (isNaN(seconds) || seconds < 0) {
                 return '--:--';
@@ -233,11 +231,143 @@
                 src: 'music/badapple.m4a',
                 cover: './images/album_art (1).png',
                 url: 'https://www.youtube.com/watch?v=FtutLA63Cp8', // 公式影絵PV動画
-                video: './videos/badapple_60fps_h264.mp4' // H.264 60fps版背景動画のパス（ブラウザ再生負荷軽減）
+                video: './videos/badapple_60fps.mp4' // 最適化済みH.264 60fps版背景動画のパス
             }
         ];
 
-        let currentSongIndex = 0;
+        // Spotify風の一元管理されたプレーヤークラスで全ての状態を管理
+        class MediaPlayer {
+            constructor() {
+                // 再生状態を内部で一元管理
+                this.isPlaying = false;
+                this.currentSongIndex = 0;
+                this.displayedTotalDuration = NaN;
+                this.audio = audioPlayer;
+                this.video = backgroundVideo;
+                this.progress = progressFilled;
+                this.initEventListeners();
+            }
+
+            // 全てのイベントリスナーをクラス内で登録して競合を防ぐ
+            initEventListeners() {
+                this.audio.addEventListener('timeupdate', () => this.handleTimeUpdate());
+                this.audio.addEventListener('ended', () => this.playNext());
+                document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
+                progressBar.addEventListener('click', (e) => this.handleProgressClick(e));
+            }
+
+            // 再生位置の同期処理を内部化
+            handleTimeUpdate() {
+                const currentTime = this.audio.currentTime;
+                const duration = this.audio.duration;
+                // 0.5秒以上のズレがある場合のみ同期
+                if (!this.video.paused && Math.abs(this.video.currentTime - currentTime) > 0.5) {
+                    this.video.currentTime = currentTime;
+                }
+                // プログレスバーの更新
+                if (!isNaN(duration) && duration > 0) {
+                    this.progress.style.width = `${(currentTime/duration)*100}%`;
+                    timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(this.displayedTotalDuration)}`;
+                }
+            }
+
+            // プログレスバークリック時の処理を内部化
+            handleProgressClick(e) {
+                const progressBarWidth = progressBar.clientWidth;
+                const clickX = e.offsetX;
+                const duration = this.audio.duration;
+                if (!isNaN(duration)) {
+                    const newTime = (clickX / progressBarWidth) * duration;
+                    this.audio.currentTime = newTime;
+                    if (!this.video.paused) {
+                        this.video.currentTime = newTime;
+                    }
+                }
+            }
+
+            // タブ切り替え時の同期処理を内部化
+            handleVisibilityChange() {
+                if (!document.hidden && this.isPlaying) {
+                    if (Math.abs(this.video.currentTime - this.audio.currentTime) > 0.1) {
+                        this.video.currentTime = this.audio.currentTime;
+                    }
+                }
+            }
+
+            // 再生処理を単一のエントリポイントに集約
+            play() {
+                if (this.isPlaying) return; // 二重再生を完全に防止
+                // 再生前にリセットせず、停止していた位置から続けて再生
+                // ズレがある場合のみ現在の音声位置に動画を同期
+                if (Math.abs(this.video.currentTime - this.audio.currentTime) > 0.1) {
+                    this.video.currentTime = this.audio.currentTime;
+                }
+                // 同時再生で同期を保証
+                Promise.all([this.audio.play(), this.video.play()]).then(() => {
+                    this.isPlaying = true;
+                    this.video.style.opacity = '0.5';
+                    updatePlayPauseIcon();
+                }).catch(e => console.error("再生エラー:", e));
+            }
+
+            // 一時停止処理も単一のエントリポイントに集約
+            pause() {
+                if (!this.isPlaying) return; // 二重停止を防止
+                this.audio.pause();
+                this.video.pause();
+                // 一時停止した位置は保持して、再開時にそこから続ける
+                this.isPlaying = false;
+                this.video.style.opacity = '0';
+                updatePlayPauseIcon();
+            }
+
+            // 再生/一時停止のトグル処理
+            toggle() {
+                this.isPlaying ? this.pause() : this.play();
+            }
+
+            // 曲の切り替え処理も内部化
+            playNext() {
+                const wasPlaying = this.isPlaying;
+                this.pause();
+                this.currentSongIndex = (this.currentSongIndex + 1) % songs.length;
+                this.loadSong(this.currentSongIndex);
+                if (wasPlaying) this.play();
+            }
+
+            playPrev() {
+                const wasPlaying = this.isPlaying;
+                this.pause();
+                this.currentSongIndex = (this.currentSongIndex - 1 + songs.length) % songs.length;
+                this.loadSong(this.currentSongIndex);
+                if (wasPlaying) this.play();
+            }
+
+            // 曲の読み込み処理も内部化
+            loadSong(songIndex) {
+                const song = songs[songIndex];
+                this.audio.src = song.src;
+                albumArt.src = song.cover;
+                songTitle.textContent = song.title;
+                songTitle.href = song.url;
+                if (song.video) {
+                    this.video.src = song.video;
+                    this.video.load();
+                    this.video.currentTime = 0;
+                }
+                this.audio.load();
+                this.progress.style.width = '0%';
+                this.audio.onloadedmetadata = () => {
+                    if (!isNaN(this.audio.duration) && this.audio.duration > 0) {
+                        this.displayedTotalDuration = this.audio.duration;
+                        timeDisplay.textContent = `0:00 / ${formatTime(this.displayedTotalDuration)}`;
+                    }
+                };
+            }
+        }
+
+        // プレーヤーインスタンスを1つだけ生成して一元管理（Spotifyと同じ構造）
+        const player = new MediaPlayer();
 
         function updatePlayPauseIcon() {
             if (audioPlayer.paused) {
@@ -249,154 +379,11 @@
             }
         }
 
-        function loadSong(songIndex) {
-            const song = songs[songIndex];
-            audioPlayer.src = song.src;
-            albumArt.src = song.cover;
-            songTitle.textContent = song.title;
-            // hrefを現在の曲のURLに更新（クリックで外部リンクへ飛ぶように）
-            songTitle.href = song.url;
-            // 背景動画を現在の曲の動画に更新
-            if (song.video) {
-                backgroundVideo.src = song.video;
-                backgroundVideo.load();
-                backgroundVideo.currentTime = 0;
-            }
-            audioPlayer.load(); // Load the new song
-            progressFilled.style.width = '0%'; // プログレスバーを0%にリセット
-            audioPlayer.onloadedmetadata = () => {
-                if (!isNaN(audioPlayer.duration) && audioPlayer.duration > 0) {
-                    displayedTotalDuration = audioPlayer.duration; // 初めてdurationが取得できたときに設定
-                    timeDisplay.textContent = `0:00 / ${formatTime(displayedTotalDuration)}`;
-                } else {
-                    displayedTotalDuration = NaN; // durationが不正な場合はリセット
-                    timeDisplay.textContent = `0:00 / --:--`;
-                }
-            };
-        }
-
-        function playMusic() {
-            // 再生開始前に必ず動画の再生位置を0秒にリセットしてから再生
-            backgroundVideo.currentTime = 0;
-            const playPromise = Promise.all([audioPlayer.play(), backgroundVideo.play()]);
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    updatePlayPauseIcon(); // 再生成功後にUIを更新
-                }).catch(error => {
-                    console.error("再生がブロックされました:", error);
-                    audioPlayer.pause();
-                    backgroundVideo.pause(); // ブロックされた場合は動画も一時停止
-                    updatePlayPauseIcon(); // UIを一時停止状態に更新
-                });
-            } else {
-                // Promiseを返さない古いブラウザ向けのフォールバック
-                updatePlayPauseIcon();
-            }
-        }
-
-        function pauseMusic() {
-            audioPlayer.pause();
-            backgroundVideo.pause(); // 音声を一時停止したら動画も一時停止
-            updatePlayPauseIcon(); // UIを一時停止状態に更新
-        }
-
-        function togglePlayPause() {
-            if (audioPlayer.paused) { // audioPlayer.pausedを直接チェック
-                playMusic();
-            } else {
-                pauseMusic();
-            }
-        }
-
-        audioPlayer.addEventListener('timeupdate', () => {
-            const currentTime = audioPlayer.currentTime;
-            const duration = audioPlayer.duration; // 現在のdurationはプログレスバーの計算に使う
-
-            // 再生中は常に音声の再生位置に動画の再生位置を同期させる（0.5秒以上の大きなズレがある場合のみ修正）
-            if (!backgroundVideo.paused && Math.abs(backgroundVideo.currentTime - currentTime) > 0.5) {
-                backgroundVideo.currentTime = currentTime;
-            }
-
-            // console.log(`Time update: currentTime=${currentTime}, duration=${duration}`);
-            if (!isNaN(duration) && duration > 0) {
-                const progressPercent = (currentTime / duration) * 100;
-                progressFilled.style.width = `${progressPercent}%`;
-                // 表示する合計再生時間にはdisplayedTotalDurationを使用
-                timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(displayedTotalDuration)}`;
-            } else {
-                timeDisplay.textContent = `${formatTime(currentTime)} / --:--`;
-                progressFilled.style.width = `0%`;
-            }
-        });
-
-        audioPlayer.addEventListener('durationchange', () => {
-            const duration = audioPlayer.duration;
-            // timeDisplay.textContent の更新は timeupdate イベントに任せる
-        });
-
-        progressBar.addEventListener('click', (e) => {
-            const progressBarWidth = progressBar.clientWidth;
-            const clickX = e.offsetX;
-            const duration = audioPlayer.duration;
-            if (!isNaN(duration)) {
-                const newTime = (clickX / progressBarWidth) * duration;
-                audioPlayer.currentTime = newTime;
-                // プログレスバークリックで再生位置を変更した際も動画の再生位置を同期
-                if (!backgroundVideo.paused) {
-                    backgroundVideo.currentTime = newTime;
-                }
-            }
-        });
-
-        function playNextSong() {
-            const wasPlayingBefore = !audioPlayer.paused; // 曲を切り替える前の再生状態を記憶
-            audioPlayer.pause(); // 新しい曲をロードする前に一時停止を保証
-            backgroundVideo.pause();
-            currentSongIndex = (currentSongIndex + 1) % songs.length;
-            loadSong(currentSongIndex);
-            if (wasPlayingBefore) {
-                // 曲切り替え後も音声と動画を同時に再生して同期を維持
-                Promise.all([audioPlayer.play(), backgroundVideo.play()]).catch(e => console.log("再生エラー:", e));
-            } else {
-                audioPlayer.pause();
-                backgroundVideo.pause();
-                updatePlayPauseIcon(); // UIを停止状態に更新
-            }
-        }
-
-        function playPrevSong() {
-            const wasPlayingBefore = !audioPlayer.paused; // 曲を切り替える前の再生状態を記憶
-            audioPlayer.pause(); // 新しい曲をロードする前に一時停止を保証
-            backgroundVideo.pause();
-            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-            loadSong(currentSongIndex);
-            if (wasPlayingBefore) {
-                // 曲切り替え後も音声と動画を同時に再生して同期を維持
-                Promise.all([audioPlayer.play(), backgroundVideo.play()]).catch(e => console.log("再生エラー:", e));
-            } else {
-                audioPlayer.pause();
-                backgroundVideo.pause();
-                updatePlayPauseIcon(); // UIを停止状態に更新
-            }
-        }
-
-        audioPlayer.addEventListener('ended', playNextSong);
-
-        // タブの表示状態が変わった時に音声と動画の同期を再確認（別サイトから戻ってきた時のカクつき対策）
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden && !audioPlayer.paused) {
-                // ページが表示され、かつ再生中の場合は再生位置を再同期
-                if (Math.abs(backgroundVideo.currentTime - audioPlayer.currentTime) > 0.1) {
-                    backgroundVideo.currentTime = audioPlayer.currentTime;
-                }
-            }
-        });
-
-        // Initial load
-        loadSong(currentSongIndex);
-        audioPlayer.volume = volumeSlider.value; // Set initial volume
-        updatePlayPauseIcon(); // UIを初期状態に同期
-        audioPlayer.pause(); // 初期状態で必ず一時停止（自動再生を完全に無効化）
+        // Initial load (Spotify風の初期化処理)
+        player.loadSong(player.currentSongIndex);
+        audioPlayer.volume = volumeSlider.value;
+        updatePlayPauseIcon();
+        player.pause(); // 初期状態で必ず停止状態に
         
         // 曲名クリックでその曲の外部ページに移動するイベントを設定
          document.getElementById('song-title').addEventListener('click', function(e) {
@@ -471,25 +458,10 @@
         }
         setInitialVolumeState();
 
-        // --- Music Player Play/Pause ---
-        playPauseBtn.addEventListener('click', () => {
-            if (audioPlayer.paused) {
-                // 音声と動画を同時に再生開始して同期を確保
-                Promise.all([audioPlayer.play(), backgroundVideo.play()]).then(() => {
-                    // 再生開始時に背景動画をフェードイン
-                    backgroundVideo.style.opacity = '0.5';
-                }).catch(e => console.log("再生エラー:", e));
-            } else {
-                audioPlayer.pause();
-                backgroundVideo.pause();
-                // 一時停止時に背景動画をフェードアウト
-                backgroundVideo.style.opacity = '0';
-            }
-            updatePlayPauseIcon();
-        });
-
-        prevBtn.addEventListener('click', playPrevSong);
-        nextBtn.addEventListener('click', playNextSong);
+        // --- Music Player Play/Pause (Spotify風の単一エントリポイント) ---
+        playPauseBtn.addEventListener('click', () => player.toggle());
+        prevBtn.addEventListener('click', () => player.playPrev());
+        nextBtn.addEventListener('click', () => player.playNext());
 
         // --- ページの可視性変更時の処理（別タブに移動して戻った時のカクつき対策）---
         document.addEventListener('visibilitychange', () => {
