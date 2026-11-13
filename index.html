@@ -25,7 +25,7 @@
     </div>
 
     <div id="scroll-container">
-        <section class="card" id="card-1">
+        <section class="card">
             <div class="container">
                 <div class="profile-group">
                     <img src="./images/Re_zero (Fanart).jpg" alt="User Avatar" class="user-avatar">
@@ -53,7 +53,7 @@
                 </div>
             </div>
         </section>
-        <section class="card" id="card-2">
+        <section class="card">
         <div class="card-content">
                 <div id="clock-container">
                     <div id="analog-clock">
@@ -168,16 +168,14 @@
 
             </div>
       </section>
-      <section class="card" id="card-3">
-        <div class="card-content">
-            <div class="container">
-                <h2>このサイトについて</h2>
-                <div style="text-align: left; line-height: 1.8; margin-top: 20px;">
-                      <p>これは自分の自己満で作った個人サイトです。<br>最初のカードにX（Twitter）とDiscordのアイコンがありますので、各プロフィールを調べたりするのがめんどくさい人は、このサイトのアイコンから直接アクセスしてください。</p>
-                  </div>
+        <section class="card" id="card-3">
+            <div class="card-content">
+                <div class="tab-buttons">
+                    <button class="tab-button active">サイトについて</button>
+                </div>
+                <p>このサイトは、musukeが自己満足のために作ったものです。<br><a href="#card-1" onclick="event.preventDefault(); scrollToCard(0);" title="card-1へ移動">card-1</a>にはX (旧Twitter)とDiscordへのリンクがあります。<br>musukeについて調べるのが面倒な方は、そちらからどうぞ。</p>
             </div>
-        </div>
-      </section>
+        </section>
     </div>
 
     <nav id="scroll-nav">
@@ -210,6 +208,12 @@
         const scrollContainer = document.getElementById('scroll-container');
         const navLinks = document.querySelectorAll('#scroll-nav a');
         const cards = Array.from(document.querySelectorAll('#scroll-container .card'));
+        // 各カードにidを設定（既存の1,2番目と新しい3番目を統一）
+        cards.forEach((card, index) => {
+            if (!card.id) {
+                card.id = `card-${index + 1}`;
+            }
+        });
         const playPauseBtn = document.getElementById('play-pause-btn');
         const playIcon = document.getElementById('play-icon');
         const pauseIcon = document.getElementById('pause-icon');
@@ -608,11 +612,12 @@
         }
 
         function scrollToCard(index) {
-            if (isScrolling || index < 0 || index >= cards.length) return;
+            if (index < 0 || index >= cards.length) return;
             isScrolling = true;
             currentCardIndex = index;
             const targetY = cards[index].offsetTop;
             smoothScrollTo(targetY);
+            // すぐにナビゲーションを更新
             navLinks.forEach((link, i) => {
                 link.classList.toggle('active', i === index);
             });
@@ -620,9 +625,13 @@
             history.pushState(null, '', `#card-${index + 1}`);
             // 現在のカードインデックスをlocalStorageに保存
             localStorage.setItem('lastViewedCardIndex', index);
+            // スクロール完了後に再度確実にナビゲーションを更新
             setTimeout(() => {
+                navLinks.forEach((link, i) => {
+                    link.classList.toggle('active', i === index);
+                });
                 isScrolling = false;
-            }, scrollDuration);
+            }, scrollDuration + 100);
         }
 
         scrollContainer.addEventListener('wheel', function(e) {
@@ -663,10 +672,14 @@
         });
 
 
-        navLinks.forEach((link, index) => {
+        // ナビゲーションリンクに手動スクロールイベントを追加
+        navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault();
-                scrollToCard(index);
+                e.preventDefault(); // デフォルトのアンカー動作をキャンセル
+                const targetId = this.getAttribute('href');
+                const targetIndex = parseInt(targetId.replace('#card-', '')) - 1;
+                console.log('Nav link clicked, targetId:', targetId, 'targetIndex:', targetIndex);
+                scrollToCard(targetIndex);
             });
         });
         // ページ読み込み時に初期化関数を呼び出す
@@ -718,9 +731,21 @@
         }
         initializeActiveCard();
 
+        // タブ切り替え機能
+        function openTab(evt, tabName) {
+            const tabContents = evt.target.closest('.card-content').querySelectorAll('.tab-content');
+            tabContents.forEach(tabContent => {
+                tabContent.style.display = "none";
+            });
 
+            const tabButtons = evt.target.closest('.tab-buttons').querySelectorAll('.tab-button');
+            tabButtons.forEach(tabButton => {
+                tabButton.className = tabButton.className.replace(" active", "");
+            });
 
-
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
 
         // --- Clock ---
         function updateClock() {

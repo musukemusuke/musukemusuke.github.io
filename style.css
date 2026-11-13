@@ -5,6 +5,55 @@ html {
     scrollbar-width: none;  /* Firefox */
 }
 
+/* card-3 タブ機能のスタイル */
+.tab-buttons {
+    display: flex;
+    border-bottom: 2px solid #555;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px; /* 下線を親要素のborderに重ねる */
+}
+
+.tab-button:hover {
+    background-color: #333;
+}
+
+.tab-button.active {
+    color: #fff;
+    border-bottom: 2px solid #fff;
+}
+
+.tab-content {
+    display: none; /* デフォルトで非表示 */
+    animation: fadeIn 0.5s;
+}
+
+.tab-content.active {
+    display: block; /* アクティブなタブのみ表示 */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* カード内のリンクスタイル */
+.card-content a,
+.card-content a:visited {
+    color: #fff;
+    text-decoration: underline;
+}
+
 html::-webkit-scrollbar {
     display: none; /* Chrome, Safari, and Opera */
 }
@@ -894,6 +943,7 @@ h1 {
     100% { transform: rotate(360deg); }
 }
 
+@media (max-width: 768px) {
     /* Volume controls */
     #volume-container {
         top: 20px; /* PC版と同じ位置 */
