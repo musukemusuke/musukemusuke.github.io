@@ -38,6 +38,10 @@ html {
     animation: fadeIn 0.5s;
 }
 
+.tab-content p {
+    margin-top: 0;
+}
+
 .tab-content.active {
     display: block; /* アクティブなタブのみ表示 */
 }
