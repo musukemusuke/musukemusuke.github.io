@@ -954,74 +954,47 @@ h1 {
 @media (max-width: 768px) {
     /* Volume controls */
     #volume-container {
-        top: 10px;
-        left: 10px;
+        top: 20px; /* PC版と同じ位置 */
+        bottom: auto; /* bottom指定を解除 */
+        left: 20px;
         flex-direction: row;
     }
 
     #mute-toggle {
-        width: 36px;
-        height: 36px;
+        width: 48px; /* PC版と同じサイズ */
+        height: 48px; /* PC版と同じサイズ */
     }
 
     .volume-icon {
-        width: 18px;
-        height: 18px;
+        width: 24px; /* PC版と同じサイズ */
+        height: 24px; /* PC版と同じサイズ */
     }
 
     #volume-container:hover .volume-slider {
-        width: 80px;
+        width: 100px; /* PC版と同じ幅 */
     }
 
     /* Clock adjustments */
     #clock-container {
-        padding: 10px 20px;
+        padding: 20px 40px; /* PC版と同じパディング */
     }
 
     #time {
-        font-size: 2em;
+        font-size: 3em; /* PC版と同じフォントサイズ */
     }
 
     #date {
-        font-size: 1em;
+        font-size: 1.2em; /* PC版と同じフォントサイズ */
     }
 
     /* Scroll navigation dots */
     #scroll-nav {
-        right: 10px;
-        gap: 10px;
+        right: 20px; /* PC版と同じ位置 */
+        gap: 15px; /* PC版と同じギャップ */
     }
 
     #scroll-nav a {
-        width: 8px;
-        height: 8px;
-    }
-
-    /* Card adjustments for mobile */
-    .card {
-        padding: 15px;
-    }
-
-    .card-content {
-        font-size: 0.9em;
-    }
-
-    /* Tab button adjustments for mobile */
-    .tab-button {
-        padding: 8px 16px;
-        font-size: 0.9em;
-    }
-
-    /* Avatar adjustments for mobile */
-    .avatar {
-        width: 120px;
-        height: 120px;
-    }
-
-    /* Social icon adjustments for mobile */
-    .social-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
+        width: 10px; /* PC版と同じサイズ */
+        height: 10px; /* PC版と同じサイズ */
     }
 }
